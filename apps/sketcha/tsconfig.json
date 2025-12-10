@@ -1,0 +1,20 @@
+{
+  "extends": "@repo/typescript-config/nextjs",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "../sketcha/**/*.ts",
+    "../sketcha/**/*.tsx",
+    "../sketcha/next-env.d.ts",
+    "../sketcha/next.config.js",
+    "../sketcha/.next/types/**/*.ts"
+  ],
+  "exclude": [
+    "../sketcha/node_modules"
+  ]
+}
