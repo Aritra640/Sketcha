@@ -1,0 +1,20 @@
+{
+  "name": "@repo/auth",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run dev:compile & bun run dev:run",
+    "dev:compile": "tsc --watch",
+    "dev:run": "bun --watch dist/index.js",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@repo/typescript-config": "workspace:*"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
+
