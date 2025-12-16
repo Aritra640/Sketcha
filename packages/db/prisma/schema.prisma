@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model GuestUserSession {
+  sessionId String   @id @default(uuid())
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  canvases UntitledCanvas[]
+}
+
+model UntitledCanvas {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  guest   GuestUserSession @relation(fields: [guestId], references: [sessionId], onDelete: Cascade, onUpdate: Cascade)
+  guestId String
+}

@@ -9,11 +9,22 @@
     "dev:run": "bun --watch dist/index.js",
     "build": "tsc"
   },
+  "exports": {
+    "./prisma_client": "./src/index.ts"
+  },
   "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
     "@types/bun": "latest",
-    "@repo/typescript-config": "workspace:*"
+    "@types/pg": "^8.16.0",
+    "prisma": "^7.1.0"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.1.0",
+    "@prisma/client": "^7.1.0",
+    "dotenv": "^17.2.3",
+    "pg": "^8.16.3"
   }
 }
