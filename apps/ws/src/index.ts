@@ -1,6 +1,2 @@
-import SeedDatabaseTest from "./seed.js"
-
-SeedDatabaseTest().finally(() => {
-  console.log("\nHello from ws")
-})
+console.log("Hello from WS!");
 

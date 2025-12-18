@@ -3,28 +3,30 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
-  "scripts": {
-    "dev": "bun run dev:compile & bun run dev:run",
-    "dev:compile": "tsc --watch",
-    "dev:run": "bun --watch dist/index.js",
-    "build": "tsc"
-  },
-  "exports": {
-    "./prisma_client": "./src/index.ts"
-  },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "@types/bun": "latest",
     "@types/pg": "^8.16.0",
-    "prisma": "^7.1.0"
+    "prisma": "^7.2.0"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
+  "scripts": {
+    "dev": "bun run dev:compile & bun run dev:run",
+    "dev:compile": "tsc --watch",
+    "dev:run": "bun --watch ./dist/index.js",
+    "build": "tsc",
+    "seed:DB": "bunx --bun prisma db seed",
+    "delete:allguests": "bun run ./scripts/deleteAllGuests.ts"
+  },
   "dependencies": {
-    "@prisma/adapter-pg": "^7.1.0",
-    "@prisma/client": "^7.1.0",
+    "@prisma/adapter-pg": "^7.2.0",
+    "@prisma/client": "^7.2.0",
     "dotenv": "^17.2.3",
     "pg": "^8.16.3"
+  },
+  "exports": {
+    ".": "./src/index.ts"
   }
 }
