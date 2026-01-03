@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "bun run dev:compile & bun run dev:run",
     "dev:compile": "tsc --watch",
-    "dev:run": "bun --watch dist/index.js",
+    "dev:run": "bun --watch ./dist/src/index.js",
     "build": "tsc"
   },
   "devDependencies": {
