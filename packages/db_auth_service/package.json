@@ -1,0 +1,18 @@
+{
+  "name": "@repo/db_auth_service",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "scripts": {
+    "dev": "bun run index.ts",
+    "start:compile": "tsc --watch",
+    "start:run": "bun --watch ./dist/index.js",
+    "start": "bun run start:compile && bun run start:run"
+  }
+}
