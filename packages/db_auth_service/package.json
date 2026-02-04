@@ -4,7 +4,9 @@
   "type": "module",
   "private": true,
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*"
   },
   "peerDependencies": {
     "typescript": "^5"
@@ -14,5 +16,16 @@
     "start:compile": "tsc --watch",
     "start:run": "bun --watch ./dist/index.js",
     "start": "bun run start:compile && bun run start:run"
+  },
+  "dependencies": {
+    "@better-auth/cli": "^1.4.18",
+    "@prisma/adapter-pg": "^7.3.0",
+    "@prisma/client": "^7.3.0",
+    "@types/node": "^25.2.0",
+    "@types/pg": "^8.16.0",
+    "better-auth": "^1.4.18",
+    "dotenv": "^17.2.3",
+    "pg": "^8.18.0",
+    "prisma": "^7.3.0"
   }
 }
