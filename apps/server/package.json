@@ -1,0 +1,13 @@
+{
+  "name": "server",
+  "scripts": {
+    "dev": "bun run --hot index.ts"
+  },
+  "dependencies": {
+    "better-auth": "^1.4.18",
+    "hono": "^4.11.7"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
