@@ -1,10 +1,1 @@
-import { Hono } from 'hono'
-const app = new Hono()
-
-app.get('/', (c) => c.text('Hono!'))
-
-
-export default {
-  port: 8080,
-  fetch: app.fetch,
-}
+console.log("Hello via Bun!");
