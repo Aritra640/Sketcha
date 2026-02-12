@@ -22,7 +22,7 @@ export async function ToolArea() {
         className="
           flex items-center gap-1 sm:gap-1.5
           px-1.5 sm:px-2 py-1 sm:py-1.5
-          rounded-2xl
+          rounded-md
           bg-toolarea
           backdrop-blur-xl
           border border-base-300/40

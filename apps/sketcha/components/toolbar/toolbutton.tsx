@@ -17,14 +17,14 @@ export function ToolButton({ name, shape }: ToolButtonProps) {
   return (
     <button
       type="button"
-      className={`rounded-2xl btn btn-sm sm:btn-md border-transparent ${
+      className={`rounded-md btn btn-sm sm:btn-sm border-transparent ${
         isSelected
           ? "bg-[var(--color-selectedtool)] text-white"
           : "bg-transparent hover:bg-white/10"
       }`}
       onClick={() => setTool(name)}
     >
-      <div>{shape}</div>
+      <div className="">{shape}</div>
     </button>
   );
 }

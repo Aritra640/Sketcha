@@ -14,7 +14,7 @@ export function LockButton({ shape }: LockButtonProps) {
   return (
     <button
       type="button"
-      className={`rounded-2xl btn btn-sm sm:btn-md border-transparent ${
+      className={`rounded-md btn btn-sm sm:btn-sm border-transparent ${
         isSelected
           ? "bg-[var(--color-selectedtool)] text-white"
           : "bg-transparent hover:bg-white/10"
