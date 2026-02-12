@@ -4,7 +4,7 @@ import { Stage, Layer, Rect } from "react-konva";
 
 export function Canvas() {
   return (
-    <Stage width={window.innerWidth} height={window.innerHeight}>
+    <Stage className="" width={window.innerWidth} height={window.innerHeight}>
       <Layer>
         <Rect
           x={20}

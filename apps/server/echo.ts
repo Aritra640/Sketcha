@@ -17,7 +17,7 @@ export function createServer(config: ServerConfig) {
         }
       }
 
-      return new Response("Not Found", { status: 404 });
+      // return new Response("Not Found", { status: 404 });
     },
     websocket: {
       open(ws) {

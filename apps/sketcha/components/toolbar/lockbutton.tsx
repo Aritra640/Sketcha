@@ -1,18 +1,15 @@
 "use client";
 
 import { useAtom } from "jotai";
-import { toolAtom } from "../../store/state/state";
-import type { toolTypes } from "../../store/types/toolTypes";
+import { lockAtom } from "../../store/state/state";
 
-interface ToolButtonProps {
-  name: toolTypes;
+interface LockButtonProps {
   shape: React.ReactNode;
 }
 
-export function ToolButton({ name, shape }: ToolButtonProps) {
-  const [tool, setTool] = useAtom(toolAtom);
-
-  const isSelected = name === tool;
+export function LockButton({ shape }: LockButtonProps) {
+  const [lock, setLock] = useAtom(lockAtom);
+  const isSelected = lock;
 
   return (
     <button
@@ -22,7 +19,7 @@ export function ToolButton({ name, shape }: ToolButtonProps) {
           ? "bg-[var(--color-selectedtool)] text-white"
           : "bg-transparent hover:bg-white/10"
       }`}
-      onClick={() => setTool(name)}
+      onClick={() => setLock(!lock)}
     >
       <div>{shape}</div>
     </button>

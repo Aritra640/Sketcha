@@ -3,8 +3,8 @@ import { ToolArea } from "../../components/toolbar/toolarea";
 
 export default function DemoPage() {
   return (
-    <div className="bg-neutral-900 h-screen w-screen">
-      <ToolArea />
+    <div className="bg-background h-screen w-screen">
+      <div><ToolArea /></div>
       <Canvas />
     </div>
   );

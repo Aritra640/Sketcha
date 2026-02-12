@@ -1,7 +1,7 @@
 /// <reference types="bun" />
 
 import { describe, it, expect, beforeAll, afterAll } from "bun:test";
-import { createServer } from "../server";
+import { createServer } from "../echo";
 
 describe("WebSocket Server", () => {
   let server: ReturnType<typeof createServer>;

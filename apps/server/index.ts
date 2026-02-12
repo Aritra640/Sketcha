@@ -1,4 +1,4 @@
-import { createServer } from "./server";
+import { createServer } from "./echo";
 
 const server = createServer({ port: 8080 });
 
