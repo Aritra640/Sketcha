@@ -24,7 +24,6 @@ export function Canvas() {
           shadowBlur={10}
           draggable
           stroke="white"
-          strokeWidth={3}
           cornerRadius={[10, 10, 10, 10]}
         />
       </Layer>

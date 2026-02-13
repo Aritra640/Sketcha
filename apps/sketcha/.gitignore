@@ -6,6 +6,8 @@
 .pnp.js
 .yarn/install-state.gz
 
+
+components/canvas/todo.md
 # testing
 /coverage
 
