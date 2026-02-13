@@ -15,7 +15,9 @@
     "dev": "bun run index.ts",
     "start:compile": "tsc --watch",
     "start:run": "bun --watch ./dist/index.js",
-    "start": "bun run start:compile && bun run start:run"
+    "start": "bun run start:compile && bun run start:run",
+    "db:generate": "bunx prisma generate",
+    "db:migrate": "bunx prisma migrate dev"
   },
   "dependencies": {
     "@better-auth/cli": "^1.4.18",

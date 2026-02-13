@@ -23,6 +23,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  canvases      Canvas[]
 
   @@unique([email])
   @@map("user")
@@ -74,4 +75,22 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Canvas {
+  id        String   @id @default(uuid())
+  title      String
+  createdAt DateTime @default(now())
+  userId    String 
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shapes    Shape[]
+}
+
+model Shape {
+  id        String   @id @default(uuid())
+  type      String
+  shape     Json
+  createdAt DateTime @default(now())
+  canvasId  String 
+  canvas    Canvas   @relation(fields: [canvasId], references: [id], onDelete: Cascade)
 }
