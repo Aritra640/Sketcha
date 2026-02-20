@@ -2,8 +2,32 @@
 @plugin "daisyui";
 
 @theme {
-  --color-background: #121212;
+  --color-background: #0a0a0f;
+  --color-surface: #12121a;
+  --color-surface-elevated: #1a1a24;
+  --color-violet-900: #2e1065;
+  --color-violet-800: #4c1d95;
+  --color-violet-700: #5b21b6;
+  --color-violet-600: #7c3aed;
+  --color-violet-500: #8b5cf6;
+  --color-violet-400: #a78bfa;
+  --color-violet-300: #c4b5fd;
+  --color-violet-200: #ddd6fe;
+  --color-violet-100: #ede9fe;
+  --color-text-primary: #f5f3ff;
+  --color-text-secondary: #a1a1aa;
   --color-toolarea: #242328;
-  --color-selectedtool: #403E66;
-  --color-collab: #A7A5F9;
+  --color-selectedtool: #403e66;
+  --color-collab: #a7a5f9;
+}
+
+:root {
+  --background: var(--color-background);
+  --foreground: var(--color-text-primary);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  min-height: 100vh;
 }

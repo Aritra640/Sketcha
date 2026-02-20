@@ -24,6 +24,7 @@ model User {
   sessions      Session[]
   accounts      Account[]
   canvases      Canvas[]
+  collabs       Collab[]
 
   @@unique([email])
   @@map("user")
@@ -93,4 +94,13 @@ model Shape {
   createdAt DateTime @default(now())
   canvasId  String 
   canvas    Canvas   @relation(fields: [canvasId], references: [id], onDelete: Cascade)
+}
+
+
+model Collab {
+  id     String   @id @default(uuid())
+  title  String 
+  createdAt DateTime @default(now())
+  userId  String 
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
