@@ -4,16 +4,16 @@ import { useAtom } from "jotai";
 import { useState, useEffect, useRef } from "react";
 import { Stage, Layer, Rect, Transformer } from "react-konva";
 import Konva from "konva";
-import { drawnAtom } from "../../store/state/state";
+import { drawnAtom, toolAtom } from "../../store/state/state";
 import { Shapes } from "../../store/types/shapes/shapeProps";
 
 export function Canvas() {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [drawnShapes, setDrawnShapes] = useAtom(drawnAtom);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [curTool, setCurTool] = useAtom(toolAtom);
 
   const transformerRef = useRef<Konva.Transformer | null>(null);
-
 
   useEffect(() => {
     const updateWindowSize = () => {
@@ -28,7 +28,6 @@ export function Canvas() {
 
     return () => window.removeEventListener("resize", updateWindowSize);
   }, []);
-
 
   useEffect(() => {
     const transformer = transformerRef.current;
@@ -61,21 +60,24 @@ export function Canvas() {
         if (!pointer) return;
 
         if (e.target === stage) {
-          const newRect: Shapes = {
-            type: "Rect",
-            id: crypto.randomUUID(),
-            x: pointer.x,
-            y: pointer.y,
-            width: 100,
-            height: 100,
-            stroke: "white",
-            strokeWidth: 2,
-            shadowBlur: 5,
-            cornerRadius: [10, 10, 10, 10],
-          };
-
-          setDrawnShapes((prev) => [...prev, newRect]);
           setSelectedId(null);
+
+          if (curTool == "rect") {
+            const newRect: Shapes = {
+              type: "Rect",
+              id: crypto.randomUUID(),
+              x: pointer.x,
+              y: pointer.y,
+              width: 100,
+              height: 100,
+              stroke: "white",
+              strokeWidth: 2,
+              shadowBlur: 5,
+              cornerRadius: [10, 10, 10, 10],
+            };
+
+            setDrawnShapes((prev) => [...prev, newRect]);
+          }
         }
       }}
     >
@@ -109,10 +111,8 @@ export function Canvas() {
 
                 setDrawnShapes((prev) =>
                   prev.map((s) =>
-                    s.id === shape.id
-                      ? { ...s, x: node.x(), y: node.y() }
-                      : s
-                  )
+                    s.id === shape.id ? { ...s, x: node.x(), y: node.y() } : s,
+                  ),
                 );
               }}
               onTransformEnd={(e) => {
@@ -137,8 +137,8 @@ export function Canvas() {
                           width: newWidth,
                           height: newHeight,
                         }
-                      : s
-                  )
+                      : s,
+                  ),
                 );
               }}
             />
