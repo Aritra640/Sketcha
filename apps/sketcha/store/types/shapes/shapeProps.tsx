@@ -1,5 +1,6 @@
 interface RectProps {
   type: "Rect";
+  id: string;
   x: number;
   y: number;
   width: number;
@@ -12,6 +13,7 @@ interface RectProps {
 
 interface CircleProp {
   type: "Circle";
+  id: string;
   x: number;
   y: number;
   rx: number; //radius in x axis
@@ -24,6 +26,7 @@ interface CircleProp {
 
 interface LineProp {
   type: "Line"
+  id: string;
   points: number[];
   stroke: string;
   strokeWidth: number;
