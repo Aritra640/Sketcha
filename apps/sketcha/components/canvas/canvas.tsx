@@ -4,14 +4,16 @@ import { useAtom } from "jotai";
 import { useState, useEffect, useRef } from "react";
 import { Stage, Layer, Rect, Transformer } from "react-konva";
 import Konva from "konva";
-import { drawnAtom, toolAtom } from "../../store/state/state";
-import { Shapes } from "../../store/types/shapes/shapeProps";
+import { drawnAtom, selectedIdAtom, toolAtom } from "../../store/state/state";
+import { DrawLine } from "./initLine";
+import { DrawRect } from "./shapes/rect/initRect";
+import Rectangle from "./shapes/rect/Rect";
 
 export function Canvas() {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [drawnShapes, setDrawnShapes] = useAtom(drawnAtom);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [curTool, setCurTool] = useAtom(toolAtom);
+  const [selectedId, setSelectedId] = useAtom(selectedIdAtom);
+  const [curTool] = useAtom(toolAtom);
 
   const transformerRef = useRef<Konva.Transformer | null>(null);
 
@@ -63,86 +65,25 @@ export function Canvas() {
           setSelectedId(null);
 
           if (curTool == "rect") {
-            const newRect: Shapes = {
-              type: "Rect",
-              id: crypto.randomUUID(),
-              x: pointer.x,
-              y: pointer.y,
-              width: 100,
-              height: 100,
-              stroke: "white",
-              strokeWidth: 2,
-              shadowBlur: 5,
-              cornerRadius: [10, 10, 10, 10],
-            };
-
+            const newRect = DrawRect(pointer);
             setDrawnShapes((prev) => [...prev, newRect]);
+          }
+
+          if (curTool == "line") {
+            const newLine = DrawLine(pointer);
+            setDrawnShapes((prev) => [...prev, newLine]);
           }
         }
       }}
     >
       <Layer>
-        {drawnShapes.map((shape) => {
+        {drawnShapes.map((shape, i) => {
+          console.log("shape type: ", shape.type, " i: ", i );
           if (shape.type !== "Rect") return null;
 
-          return (
-            <Rect
-              id={shape.id}
-              key={shape.id}
-              x={shape.x}
-              y={shape.y}
-              width={shape.width}
-              height={shape.height}
-              stroke={shape.stroke}
-              strokeWidth={shape.strokeWidth}
-              shadowBlur={shape.shadowBlur}
-              cornerRadius={shape.cornerRadius}
-              draggable
-              onClick={() => {
-                // e.cancelBubble = true;
-                setSelectedId(shape.id);
-              }}
-              onTap={(e) => {
-                // e.cancelBubble = true;
-                setSelectedId(shape.id);
-              }}
-              onDragEnd={(e) => {
-                const node = e.target as Konva.Rect;
 
-                setDrawnShapes((prev) =>
-                  prev.map((s) =>
-                    s.id === shape.id ? { ...s, x: node.x(), y: node.y() } : s,
-                  ),
-                );
-              }}
-              onTransformEnd={(e) => {
-                const node = e.target as Konva.Rect;
-
-                const scaleX = node.scaleX();
-                const scaleY = node.scaleY();
-
-                const newWidth = Math.max(5, node.width() * scaleX);
-                const newHeight = Math.max(5, node.height() * scaleY);
-
-                node.scaleX(1);
-                node.scaleY(1);
-
-                setDrawnShapes((prev) =>
-                  prev.map((s) =>
-                    s.id === shape.id
-                      ? {
-                          ...s,
-                          x: node.x(),
-                          y: node.y(),
-                          width: newWidth,
-                          height: newHeight,
-                        }
-                      : s,
-                  ),
-                );
-              }}
-            />
-          );
+          return <Rectangle key={i} shape={shape} />
+            
         })}
 
         <Transformer ref={transformerRef} />

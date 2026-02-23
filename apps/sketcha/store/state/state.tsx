@@ -9,3 +9,5 @@ export const collabAtom = atom<true| false>(false);
 export const themeAtom = atom<"dark"|"bright">("dark");
 
 export const drawnAtom = atom<Shapes[]>([]);
+
+export const selectedIdAtom = atom<string | null>(null);
