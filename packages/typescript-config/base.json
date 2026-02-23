@@ -14,7 +14,6 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES2023",
-    "ignoreDeprecations": "6.0"
+    "target": "ES2023"
   }
 }
