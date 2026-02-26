@@ -1,4 +1,4 @@
-interface RectProps {
+export interface RectProps {
   type: "Rect";
   id: string;
   x: number;
@@ -11,7 +11,7 @@ interface RectProps {
   cornerRadius: number[];
 }
 
-interface CircleProp {
+export interface CircleProp {
   type: "Circle";
   id: string;
   x: number;
@@ -24,7 +24,7 @@ interface CircleProp {
   strokeWidth: number;
 }
 
-interface LineProp {
+export interface LineProp {
   type: "Line"
   id: string;
   points: number[];
@@ -32,6 +32,7 @@ interface LineProp {
   strokeWidth: number;
   LineCap: string;
   y: number;
+  x: number;
   shadowBlur: number;
 }
 

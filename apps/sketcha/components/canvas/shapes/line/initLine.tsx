@@ -1,17 +1,18 @@
 import { Vector2d } from "konva/lib/types";
-import { Shapes } from "../../../../store/types/shapes/shapeProps";
+import { LineProp, Shapes } from "../../../../store/types/shapes/shapeProps";
 
-export function DrawLine(pointer: Vector2d): Shapes {
+export function DrawLine(pointer: Vector2d): LineProp {
 
   const newLine: Shapes = {
     type: "Line",
     id: crypto.randomUUID(),
-    points: [pointer.x, pointer.y, pointer.x+10],
+    points: [0,0,80,-80],
     stroke: "white",
-    strokeWidth: 5,
+    strokeWidth: 2,
     LineCap: "round",
-    y: 0,
-    shadowBlur: 7,
+    y: pointer.y,
+    x: pointer.x,
+    shadowBlur: 0,
   }
 
   return newLine;

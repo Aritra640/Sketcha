@@ -7,15 +7,14 @@ import { useAtom } from "jotai";
 import { drawnAtom, selectedIdAtom } from "../../../../store/state/state";
 
 interface RectangleProps {
-  key:  number;
   shape: Shapes;
 }
 
-export default function Rectangle({key,shape}:RectangleProps) {
+export default function Rectangle({shape}:RectangleProps) {
   const [selectedId, setSelectedId] = useAtom(selectedIdAtom);
   const [drawnShapes, setDrawnShapes] = useAtom(drawnAtom);
 
-  console.log("rect id: " , key);
+  console.log("rect id: " , shape.id);
 
   if (shape.type == "Rect") {
     return (

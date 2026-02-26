@@ -5,9 +5,10 @@ import { useState, useEffect, useRef } from "react";
 import { Stage, Layer, Rect, Transformer } from "react-konva";
 import Konva from "konva";
 import { drawnAtom, selectedIdAtom, toolAtom } from "../../store/state/state";
-import { DrawLine } from "./initLine";
 import { DrawRect } from "./shapes/rect/initRect";
 import Rectangle from "./shapes/rect/Rect";
+import LineShape from "./shapes/line/Line";
+import { DrawLine } from "./shapes/line/initLine";
 
 export function Canvas() {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -54,6 +55,7 @@ export function Canvas() {
 
   return (
     <Stage
+      className=""
       width={dimensions.width}
       height={dimensions.height}
       onClick={(e) => {
@@ -78,12 +80,21 @@ export function Canvas() {
     >
       <Layer>
         {drawnShapes.map((shape, i) => {
-          console.log("shape type: ", shape.type, " i: ", i );
-          if (shape.type !== "Rect") return null;
+          console.log("shape type: ", shape.type, " i: ", i);
+          switch (shape.type) {
+            case "Rect":
+              return (
+                  <Rectangle key={shape.id} shape={shape} />
+              );
 
+            case "Line":
+              return (
+                  <LineShape key={shape.id} shape={shape} />
+              );
 
-          return <Rectangle key={i} shape={shape} />
-            
+            default:
+              return null;
+          }
         })}
 
         <Transformer ref={transformerRef} />
