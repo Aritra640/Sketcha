@@ -21,7 +21,7 @@ export function MenuButton() {
           }`}
           onClick={() => setMenu(!menu)}
         >
-          <Menu className="w-5 h-5 md:w-6 md:h-6" />
+          <Menu className="w-5 h-5" />
         </button>
       </div>
     </div>

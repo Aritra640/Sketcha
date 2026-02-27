@@ -15,7 +15,7 @@ export function MenuBar() {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="shadow-background bg-selectedtool w-72 md:w-80 h-screen"
+        className="shadow-background bg-menu w-60 h-screen"
       >
         hi hello there
       </div>
