@@ -11,7 +11,7 @@ export function MenuButton() {
   return (
     <div>
       <MenuBar />
-      <div className="fixed top-4 left-3 md:top-7 md:left-6 z-50">
+      <div className={"fixed top-4 left-3 md:top-7 md:left-6 z-50"}>
         <button
           type="button"
           className={`rounded-md h-9 btn btn-sm md:btn-sm border-transparent ${

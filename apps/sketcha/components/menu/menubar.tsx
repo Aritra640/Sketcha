@@ -2,6 +2,7 @@
 
 import { useAtom } from "jotai";
 import { menuAtom } from "../../store/state/state";
+import { MenuContent } from "./menucontent";
 
 export function MenuBar() {
   const [menu, setMenu] = useAtom(menuAtom);
@@ -15,9 +16,9 @@ export function MenuBar() {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="shadow-background bg-menu w-60 h-screen"
+        className="shadow-background rounded-r-xl bg-toolarea w-60 h-screen"
       >
-        hi hello there
+        <MenuContent />
       </div>
     </div>
   );
