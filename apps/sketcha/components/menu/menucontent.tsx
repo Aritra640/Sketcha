@@ -3,6 +3,8 @@
 import { useAtom } from "jotai";
 import { menuAtom, userDataAtom, userModeAtom } from "../../store/state/state";
 import { AuthButton } from "../auth/button";
+import { SignedMenuContent } from "./signed_menu_content";
+import { CurrentCanvasInformation } from "./current_canvas/canvas_details";
 
 function Avatar({ letter }: { letter: string }) {
   return (
@@ -27,11 +29,13 @@ function Feature({ icon, text }: { icon: string; text: string }) {
 }
 
 function CloseMenu() {
-
   const [menu, setMenu] = useAtom(menuAtom);
 
   return (
-    <button onClick={() => setMenu(!menu)} className="btn bg-selectedtool hover:bg-collab text-white rounded-xl md:hidden">
+    <button
+      onClick={() => setMenu(!menu)}
+      className="btn bg-selectedtool hover:bg-collab text-white rounded-xl md:hidden"
+    >
       Close
     </button>
   );
@@ -40,7 +44,6 @@ function CloseMenu() {
 function GuestUserAdvertisement() {
   return (
     <div className="w-full pt-5 mt-6 rounded-xl border border-slate-800 bg-slate-900/70 backdrop-blur-md p-5 shadow-lg hover:border-slate-700 transition">
-      {/* Header */}
       <div className="mb-5">
         <h2 className="text-sm text-center font-semibold text-slate-100">
           Unlock the full experience
@@ -51,7 +54,6 @@ function GuestUserAdvertisement() {
         </p>
       </div>
 
-      {/* Features */}
       <div className="flex flex-col gap-3 mb-5">
         <Feature icon="💾" text="Save your canvases" />
 
@@ -60,7 +62,6 @@ function GuestUserAdvertisement() {
         <Feature icon="☁️" text="Access your work anywhere" />
       </div>
 
-      {/* CTA */}
       <AuthButton />
     </div>
   );
@@ -74,18 +75,34 @@ export function MenuContent() {
   const username = isGuest ? userData.GuestName : userData.name;
 
   return (
-    <div className="w-full px-5 py-8 flex flex-col items-center">
+    <div className="w-full h-full px-5 py-8 flex flex-col items-center">
       <Avatar letter={username?.[0]?.toUpperCase() ?? "U"} />
 
-      <div className="mt-4 text-sm font-mono text-slate-200">{username}</div>
+      <div className="mt-4 text-lg font-mono text-slate-200">{username}</div>
 
       {isGuest && (
         <span className="text-xs text-slate-500 mt-1">Guest session</span>
       )}
+      {!isGuest && (
+        <span className="text-xs text-slate-500 mt-1">Signed user</span>
+      )}
 
       {isGuest && <GuestUserAdvertisement />}
+      {!isGuest && (
+        <div className="pt-8 w-full">
+          <div className="w-full flex justify-center items-center">
+            <CurrentCanvasInformation />
+          </div>
+          <div className="p-2 text-xs text-center font-mono text-slate-500">
+            canvas name, click to update
+          </div>
+        </div>
+      )}
+      {!isGuest && <SignedMenuContent />}
 
-      <div className="md:hidden pt-20"><CloseMenu /></div>
+      <div className="md:hidden pt-20">
+        <CloseMenu />
+      </div>
     </div>
   );
 }
