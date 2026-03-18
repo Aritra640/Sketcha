@@ -1,4 +1,4 @@
-import AuthModal from "../../../components/auth/authmodal";
+import { AuthModal } from "../../../components/auth/authmodal";
 
 export default function SigninPage() {
 

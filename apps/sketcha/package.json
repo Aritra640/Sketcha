@@ -22,7 +22,8 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-konva": "^19.2.2",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "@repo/db_auth_service": "workspace:*"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",

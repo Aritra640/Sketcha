@@ -3,4 +3,4 @@ import { auth } from "./lib/auth";
 
 console.log("Hello via Bun!");
 
-export { prisma, auth };
+export { prisma, auth};

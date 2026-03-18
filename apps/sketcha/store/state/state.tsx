@@ -14,7 +14,7 @@ export const themeAtom = atom<"dark" | "bright">("dark");
 export const drawnAtom = atom<Shapes[]>([]);
 
 export const selectedIdAtom = atom<string | null>(null);
-export const userModeAtom = atom<"signed" | "guest">("signed");
+export const userModeAtom = atom<"signed" | "guest">("guest");
 
 const sampleUserData: UserDataType = {
   isGuest: true,

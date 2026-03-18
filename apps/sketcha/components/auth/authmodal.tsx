@@ -1,12 +1,75 @@
-//NOTE: AI made
+"use client";
+
+import {authClient} from "@repo/db_auth_service/client"
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { useRef } from "react";
 
 interface AuthModalProps {
   type: "signin" | "signup";
 }
 
-export default async function AuthModal({ type }: AuthModalProps) {
+export function AuthModal({ type }: AuthModalProps) {
   const isSignin = type === "signin";
+
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  async function HandleSubmit(e: any) {
+    e.preventDefault();
+
+    if (isSignin) {
+      if (emailRef === null) return;
+      if (passwordRef === null) return;
+
+      const { data, error } = await authClient.signIn.email({
+        email: emailRef.current!.value,
+        password: passwordRef.current!.value,
+        callbackURL: "/canvas",
+        rememberMe: true,
+      },{
+          onRequest: (ctx) => {
+            console.log("rediecting ...");
+          },
+          onSuccess: (ctx) => {
+            console.log("signed successfully!");
+            redirect("/canvas");
+          },
+          onError: (ctx) => {
+            console.log(ctx.error.message);
+          }
+        });
+
+    } else if (!isSignin) {
+      if (nameRef === null) return;
+      if (emailRef === null) return;
+      if (passwordRef === null) return;
+
+      const { data, error } = await authClient.signUp.email(
+        {
+          name: nameRef.current!.value,
+          email: emailRef.current!.value,
+          password: passwordRef.current!.value,
+          callbackURL: "/canvas",
+        },
+        {
+          onRequest: (ctx) => {
+            //on request animations
+            //
+
+            console.log("redirecting .....");
+          },
+          onSuccess: (ctx) => {
+            redirect("/canvas");
+          },
+          onError: (ctx) => {
+            alert(ctx.error.message);
+          },
+        },
+      );
+    }
+  }
 
   return (
     <dialog className="modal modal-open">
@@ -28,6 +91,7 @@ export default async function AuthModal({ type }: AuthModalProps) {
           {!isSignin && (
             <input
               type="text"
+              ref={nameRef}
               placeholder="Username"
               className="input input-bordered w-full"
             />
@@ -35,17 +99,19 @@ export default async function AuthModal({ type }: AuthModalProps) {
 
           <input
             type="email"
+            ref={emailRef}
             placeholder="Email"
             className="input input-bordered w-full"
           />
 
           <input
             type="password"
+            ref={passwordRef}
             placeholder="Password"
             className="input input-bordered w-full"
           />
 
-          <button className="btn btn-primary w-full mt-2">
+          <button onClick={HandleSubmit} className="btn btn-primary w-full mt-2">
             {isSignin ? "Sign In" : "Sign Up"}
           </button>
 
@@ -81,7 +147,6 @@ export default async function AuthModal({ type }: AuthModalProps) {
                 ></path>
               </g>
             </svg>
-
             Continue with Google
           </button>
 

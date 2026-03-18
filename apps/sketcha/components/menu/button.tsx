@@ -1,12 +1,26 @@
 "use client";
 
-import { useAtom } from "jotai";
-import { menuAtom } from "../../store/state/state";
+import { useAtom, useSetAtom } from "jotai";
+import { menuAtom, userDataAtom } from "../../store/state/state";
 import { Menu } from "lucide-react";
 import { MenuBar } from "./menubar";
+import { useEffect } from "react";
 
-export function MenuButton() {
+interface MenuButtonProps {
+  isGuest: boolean;
+  guestId: string;
+}
+
+export function MenuButton({ isGuest, guestId }: MenuButtonProps) {
   const [menu, setMenu] = useAtom(menuAtom);
+  const setGuest = useSetAtom(userDataAtom);
+
+  useEffect(() => {
+    setGuest({
+      isGuest: isGuest,
+      GuestName: guestId,
+    });
+  });
 
   return (
     <div>
