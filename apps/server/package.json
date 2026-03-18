@@ -6,7 +6,8 @@
     "dev": "bun run --hot src/index.ts"
   },
   "dependencies": {
-    "hono": "^4.12.4"
+    "hono": "^4.12.4",
+    "@repo/db_auth_service": "workspace:*"
   },
   "devDependencies": {
     "@types/bun": "latest",

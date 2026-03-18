@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
-
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-violet-100">
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0f]/80 backdrop-blur-md border-b border-violet-900/50">
@@ -17,12 +16,20 @@ export default function Home() {
             />
             <span className="text-xl font-bold text-violet-100">Sketcha</span>
           </div>
-          <Link
-            href="/canvas"
-            className="px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white rounded-lg font-medium transition-colors"
-          >
-            Try Demo
-          </Link>
+          <div className="flex items-center gap-3 ml-6">
+            <Link
+              href="/auth/signin"
+              className="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg font-medium transition-colors border border-zinc-700"
+            >
+              Login
+            </Link>
+            <Link
+              href="/canvas"
+              className="px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white rounded-lg font-medium transition-colors shadow-md shadow-violet-600/20"
+            >
+              Get started
+            </Link>
+          </div>
         </nav>
       </header>
 
