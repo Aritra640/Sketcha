@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "@repo/db_auth_service": "workspace:*",
+    "@repo/types": "workspace:*",
     "better-auth": "^1.5.5",
     "hono": "^4.12.4"
   },

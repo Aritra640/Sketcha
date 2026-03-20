@@ -10,5 +10,8 @@
     "@types/bun": "latest",
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*"
+  },
+  "exports": {
+    ".": "./index.ts"
   }
 }
