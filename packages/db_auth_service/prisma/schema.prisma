@@ -77,6 +77,8 @@ model Canvas {
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   shapes    Shape[]
+
+  @@unique([userId, title])
 }
 
 model Shape {
@@ -94,4 +96,19 @@ model Collab {
   createdAt DateTime @default(now())
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum ToolType {
+  image
+  more
+  rect
+  cursor
+  line
+  pen
+  erasure
+  arrow
+  hand
+  circle
+  text
+  none
 }

@@ -28,7 +28,8 @@
     "better-auth": "^1.4.18",
     "dotenv": "^17.3.1",
     "pg": "^8.18.0",
-    "prisma": "^7.4.1"
+    "prisma": "^7.4.1",
+    "process": "^0.11.10"
   },
   "exports": {
     ".": "./index.ts",
