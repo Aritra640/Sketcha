@@ -20,24 +20,42 @@ export async function UpdateCanvasTitle(
   canvasId: string,
   newCanvasTitle: string,
 ) {
-  const canvas = await prisma.canvas.update({
-    where: {
-      id: canvasId,
-    },
-    data: {
-      title: newCanvasTitle,
-    },
-  });
+  try {
+    const canvas = await prisma.canvas.update({
+      where: {
+        id: canvasId,
+      },
+      data: {
+        title: newCanvasTitle,
+      },
+    });
+
+    if (!canvas) {
+      throw new Error("Canvas not found!");
+    }
+  } catch (err) {
+    console.error("Error in updating Canvas title: ", err);
+    throw err;
+  }
 }
 
 export async function DeleteCanvasById(canvasId: string) {
-  const canvas = await prisma.canvas.delete({
-    where: {
-      id: canvasId,
-    },
-  });
+  try {
+    const canvas = await prisma.canvas.delete({
+      where: {
+        id: canvasId,
+      },
+    });
 
-  return canvas;
+    if (!canvas) {
+      throw new Error("Canvas not found!");
+    }
+
+    return canvas;
+  } catch (err) {
+    console.error("Error in deleting canvas by ID: ", err);
+    throw err;
+  }
 }
 
 export async function GetCanvasState(canvasId: string) {
