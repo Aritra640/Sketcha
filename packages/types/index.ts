@@ -26,7 +26,7 @@ export interface CircleProp {
 }
 
 export interface LineProp {
-  type: "Line"
+  type: "Line";
   id: string;
   points: number[];
   stroke: string;
@@ -37,5 +37,12 @@ export interface LineProp {
   shadowBlur: number;
 }
 
-type Shapes = RectProps|LineProp|CircleProp;
-export type {Shapes};
+type Shapes = RectProps | LineProp | CircleProp;
+export type { Shapes };
+
+type WSmsg = {
+  command: "ADD" | "UPDATE" | "DELETE";
+  shape: Shapes;
+};
+
+export type {WSmsg};

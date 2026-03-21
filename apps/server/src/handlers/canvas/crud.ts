@@ -1,3 +1,4 @@
+//NOTE: Currently Irrevelant
 import { prisma } from "@repo/db_auth_service";
 
 export async function CreateNewCanvas(userId: string, canvasTitle: string) {
