@@ -4,10 +4,6 @@ import { PublichCanvas, SubscribeCanvas, UnSubscribeCanvas } from "./pubsub";
 
 const app = new Hono();
 
-app.get("/", (c) => {
-  return c.text("Hello Hono!");
-});
-
 //create,update,delete(erase) shapes
 app.all("/canvas/:canvasId/:userId/:token" , upgradeWebSocket((c) => {
   const {canvasId, userId, token} = c.req.param();
