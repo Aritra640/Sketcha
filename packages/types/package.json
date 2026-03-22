@@ -12,6 +12,10 @@
     "@repo/typescript-config": "*"
   },
   "exports": {
-    ".": "./index.ts"
+    ".": "./index.ts",
+    "./schema": "./schema.ts"
+  },
+  "dependencies": {
+    "zod": "^4.3.6"
   }
 }

@@ -45,4 +45,12 @@ type WSmsg = {
   shape: Shapes;
 };
 
-export type {WSmsg};
+export type { WSmsg };
+
+type WSres = {
+  iserr: boolean;
+  command: "ADD" | "UPDATE" | "DELETE";
+  shape: Shapes;
+};
+
+export type {WSres};
