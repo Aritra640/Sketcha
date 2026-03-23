@@ -1,7 +1,7 @@
 import { WSres, WSmsg } from "@repo/types";
 import { WSmsgSchema } from "@repo/types/schema";
 
-function parseMSG(msg: string): WSmsg {
+export function parseMSG(msg: string): WSmsg {
   let parsed: unknown;
 
   try {
@@ -20,18 +20,10 @@ function parseMSG(msg: string): WSmsg {
   return res.data;
 }
 
-export function ShapeController(canvasId: string, msg: string): WSres {
-  let parsedMsg: WSmsg;
-  try {
-    parsedMsg = parseMSG(msg);
-  } catch (err) {
-    console.error("Error in ShapeController: ", err);
-    throw err;
-  }
-
+export function ShapeController(canvasId: string, state: WSmsg ): WSres {
   return {
     iserr: false,
-    command: parsedMsg.command,
-    shape: parsedMsg.shape,
+    command: state.command,
+    shape: state.shape,
   };
 }

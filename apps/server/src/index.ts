@@ -1,11 +1,9 @@
 import { Hono } from "hono";
 import { upgradeWebSocket, websocket } from "hono/bun";
 import { PublichCanvas, SubscribeCanvas, UnSubscribeCanvas } from "./pubsub";
-import { ShapeController } from "./controllers/shapes";
 import { WSmsg, WSres } from "@repo/types";
-import { startWorker } from "./controllers/worker";
+import { parseMSG } from "./controllers/shapes";
 
-startWorker();
 
 const app = new Hono();
 
@@ -30,10 +28,10 @@ app.all(
 
       onMessage(evt, ws) {
         const data = evt.data.toString();
-        let res: WSres | null = null;
+        let res: WSmsg | null = null;
 
         try {
-          res = ShapeController(canvasId!, data);
+          res = parseMSG(data);
         } catch (err) {
           console.error("Message format may be wrong!: ", err);
           PublichCanvas(canvasId!, JSON.stringify({ iserr: true }), ws);

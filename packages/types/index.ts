@@ -42,6 +42,7 @@ export type { Shapes };
 
 type WSmsg = {
   command: "ADD" | "UPDATE" | "DELETE";
+  id: string|null;
   shape: Shapes;
 };
 

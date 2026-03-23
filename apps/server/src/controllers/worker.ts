@@ -15,7 +15,6 @@ async function processItem(item: QueueStore) {
           type: state.shape.type,
         },
         create: {
-          id: state.shape.id,
           canvasId: item.canvasId,
           shape: JSON.parse(JSON.stringify(state.shape)),
           type: state.shape.type,

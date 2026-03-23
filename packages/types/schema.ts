@@ -46,6 +46,7 @@ const ShapesSchema = z.discriminatedUnion("type", [
 
 const WSmsgSchema = z.object({
   command: z.enum(["ADD", "UPDATE", "DELETE"]),
+  id: z.any(),
   shape: ShapesSchema,
 });
 
