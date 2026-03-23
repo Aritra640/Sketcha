@@ -3,6 +3,9 @@ import { upgradeWebSocket, websocket } from "hono/bun";
 import { PublichCanvas, SubscribeCanvas, UnSubscribeCanvas } from "./pubsub";
 import { ShapeController } from "./controllers/shapes";
 import { WSmsg, WSres } from "@repo/types";
+import { startWorker } from "./controllers/worker";
+
+startWorker();
 
 const app = new Hono();
 
