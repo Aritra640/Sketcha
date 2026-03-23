@@ -13,7 +13,8 @@
   },
   "exports": {
     ".": "./index.ts",
-    "./schema": "./schema.ts"
+    "./schema": "./schema.ts",
+    "./storage": "./storage.ts"
   },
   "dependencies": {
     "zod": "^4.3.6"
