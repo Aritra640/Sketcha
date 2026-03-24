@@ -84,7 +84,7 @@ model Canvas {
 model Shape {
   id        String   @id @default(uuid())
   type      String
-  shape     Json
+  shape     String
   createdAt DateTime @default(now())
   canvasId  String
   canvas    Canvas   @relation(fields: [canvasId], references: [id], onDelete: Cascade)
