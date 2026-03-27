@@ -19,7 +19,6 @@ export const userModeAtom = atom<"signed" | "guest">("guest");
 const sampleUserData: UserDataType = {
   isGuest: true,
   GuestName: GetGuestName(),
-  name: "Aritra",
 };
 export const userDataAtom = atom<UserDataType>(sampleUserData);
 

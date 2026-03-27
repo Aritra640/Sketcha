@@ -1,14 +1,11 @@
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export function AuthButton() {
-  const router = useRouter();
-
   return (
-    <button
-      onClick={() => router.push("./auth/signup")}
-      className="btn w-full rounded-lg bg-selectedtool hover:bg-collab border-none text-white font-medium transition-all"
-    >
-      Sign up
-    </button>
+    <Link href="/auth/signup">
+      <button className="btn w-full rounded-lg bg-selectedtool hover:bg-collab border-none text-white font-medium transition-all">
+        Sign up
+      </button>
+    </Link>
   );
 }

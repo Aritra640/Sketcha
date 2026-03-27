@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 interface MenuButtonProps {
   isGuest: boolean;
-  guestId: string;
+  guestId?: string;
 }
 
 export function MenuButton({ isGuest, guestId }: MenuButtonProps) {
@@ -16,10 +16,12 @@ export function MenuButton({ isGuest, guestId }: MenuButtonProps) {
   const setGuest = useSetAtom(userDataAtom);
 
   useEffect(() => {
-    setGuest({
-      isGuest: isGuest,
-      GuestName: guestId,
-    });
+    if (isGuest) {
+      setGuest({
+        isGuest: isGuest,
+        GuestName: guestId,
+      });
+    }
   });
 
   return (
