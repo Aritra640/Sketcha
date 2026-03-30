@@ -26,7 +26,7 @@ export function AuthModal({ type }: AuthModalProps) {
       const { data, error } = await authClient.signIn.email({
         email: emailRef.current!.value,
         password: passwordRef.current!.value,
-        callbackURL: "/canvas",
+        callbackURL: "/canvas/user",
         rememberMe: true,
       },{
           onRequest: (ctx) => {
@@ -34,7 +34,7 @@ export function AuthModal({ type }: AuthModalProps) {
           },
           onSuccess: (ctx) => {
             console.log("signed successfully!");
-            redirect("/canvas");
+            redirect("/canvas/user");
           },
           onError: (ctx) => {
             console.log(ctx.error.message);
@@ -51,7 +51,7 @@ export function AuthModal({ type }: AuthModalProps) {
           name: nameRef.current!.value,
           email: emailRef.current!.value,
           password: passwordRef.current!.value,
-          callbackURL: "/canvas",
+          callbackURL: "/canvas/guest",
         },
         {
           onRequest: (ctx) => {
@@ -61,7 +61,7 @@ export function AuthModal({ type }: AuthModalProps) {
             console.log("redirecting .....");
           },
           onSuccess: (ctx) => {
-            redirect("/canvas");
+            redirect("/canvas/guest");
           },
           onError: (ctx) => {
             alert(ctx.error.message);

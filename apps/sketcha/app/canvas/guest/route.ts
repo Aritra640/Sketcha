@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { GetRandomCanvasName } from "../../utils/canvas";
+import { GetRandomCanvasName } from "../../../utils/canvas";
 
 export async function GET(request: Request) {
   const guestId ="Guest@" + GetRandomCanvasName();

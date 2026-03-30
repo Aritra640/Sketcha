@@ -21,6 +21,10 @@ export function MenuButton({ isGuest, guestId }: MenuButtonProps) {
         isGuest: isGuest,
         GuestName: guestId,
       });
+    } else {
+      setGuest({
+        isGuest: false,
+      });
     }
   });
 

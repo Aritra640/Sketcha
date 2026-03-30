@@ -1,18 +1,12 @@
 import { prisma } from "@repo/db_auth_service";
 import { NextResponse } from "next/server";
 import {
+    CanvasResponse,
   ConvertDeleteJSON,
   ConvertGetJSON,
   ConvertPostJSON,
   ConvertPutJSON,
 } from "../../../utils/canvasAPI_utils";
-
-export type CanvasResponse = {
-  id: string;
-  title: string;
-  userId: string;
-  createdAt: Date;
-};
 
 export async function GET(request: Request) {
   try {
@@ -55,6 +49,14 @@ export async function POST(request: Request) {
   //create a new canvas with given username and return canvasId
   try {
     const data = await request.json();
+    if (!data) {
+      return NextResponse.json(
+        {
+          error: "body may be empty or missing",
+        },
+        { status: 404 },
+      );
+    }
     const req = ConvertPostJSON(data);
 
     const canvas = await prisma.canvas.create({
@@ -91,6 +93,14 @@ export async function PUT(request: Request) {
   //Update canvas title
   try {
     const data = await request.json();
+    if (!data) {
+      return NextResponse.json(
+        {
+          error: "body may be empty or missing",
+        },
+        { status: 404 },
+      );
+    }
     const req = ConvertPutJSON(data);
 
     const canvas = await prisma.canvas.update({
@@ -125,6 +135,14 @@ export async function DELETE(request: Request) {
   //Delete canvas
   try {
     const data = request.json();
+    if (!data) {
+      return NextResponse.json(
+        {
+          error: "body may be empty or missing",
+        },
+        { status: 404 },
+      );
+    }
     const req = ConvertDeleteJSON(data);
 
     const canvas = await prisma.canvas.delete({

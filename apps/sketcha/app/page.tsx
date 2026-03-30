@@ -24,7 +24,7 @@ export default function Home() {
               Login
             </Link>
             <Link
-              href="/canvas"
+              href="/canvas/guest"
               className="px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white rounded-lg font-medium transition-colors shadow-md shadow-violet-600/20"
             >
               Get started
@@ -61,7 +61,7 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/demo"
+                href="/canvas/guest"
                 className="px-8 py-4 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-semibold text-lg transition-all hover:scale-105 shadow-lg shadow-violet-600/25"
               >
                 Start Drawing
@@ -173,7 +173,7 @@ export default function Home() {
               Start sketching in seconds. No account required.
             </p>
             <Link
-              href="/demo"
+              href="/canvas/guest"
               className="inline-block px-10 py-5 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-bold text-xl transition-all hover:scale-105 shadow-lg shadow-violet-600/30"
             >
               Open Editor
