@@ -11,6 +11,7 @@
     "check-types": "next typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@repo/db_auth_service": "workspace:*",
     "@repo/ui": "*",
     "@tailwindcss/postcss": "^4.1.18",
     "better-auth": "^1.4.18",
@@ -23,7 +24,7 @@
     "react-dom": "^19.2.0",
     "react-konva": "^19.2.2",
     "tailwindcss": "^4.1.18",
-    "@repo/db_auth_service": "workspace:*"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
