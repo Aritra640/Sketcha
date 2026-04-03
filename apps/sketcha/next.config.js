@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  transpilePackages: ["@repo/db_auth_service"],
-};
+const nextConfig = {};
 
 export default nextConfig;
