@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { ConvertGetStateJSON } from "../../../utils/canvasAPI_utils";
 import { prisma } from "@repo/db_auth_service";
 
-export async function Get(request: Request) {
+export async function GET(request: Request) {
   //get all shapes of the current canvas;
   try {
     const data = await request.json();
