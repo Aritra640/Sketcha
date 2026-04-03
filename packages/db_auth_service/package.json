@@ -17,7 +17,8 @@
     "start:run": "bun --watch ./dist/index.js",
     "start": "bun run start:compile && bun run start:run",
     "db:generate": "bunx prisma generate",
-    "db:migrate": "bunx prisma migrate dev"
+    "db:migrate": "bunx prisma migrate dev",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@better-auth/cli": "^1.4.18",
