@@ -1,7 +1,7 @@
 import { prisma } from "@repo/db_auth_service";
 import { NextResponse } from "next/server";
 import {
-    CanvasResponse,
+  CanvasResponse,
   ConvertDeleteJSON,
   ConvertGetJSON,
   ConvertPostJSON,

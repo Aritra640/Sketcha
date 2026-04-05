@@ -1,7 +1,5 @@
-import { Canvas } from "../../../../components/canvas/canvas";
-import { CollabeButton } from "../../../../components/collaborate/button";
-import { MenuButton } from "../../../../components/menu/button";
-import { ToolArea } from "../../../../components/toolbar/toolarea";
+import { CanvasPageComponent } from "../../../../components/canvas/canvas_page";
+import { UserDataType } from "../../../../store/types/user";
 
 type GuestPageProps = {
   params: Promise<{
@@ -10,15 +8,10 @@ type GuestPageProps = {
 };
 export default async function GuestPage({ params }: GuestPageProps) {
   const { guestid } = await params;
+  const userData: UserDataType = {
+    isGuest: true,
+    GuestName: guestid,
+  };
 
-  return (
-    <div className="bg-background h-screen w-screen">
-      <MenuButton isGuest={true} guestId={guestid} />
-      <div>
-        <ToolArea />
-      </div>
-      <CollabeButton />
-      <Canvas />
-    </div>
-  );
+  return <CanvasPageComponent userData={userData} />;
 }

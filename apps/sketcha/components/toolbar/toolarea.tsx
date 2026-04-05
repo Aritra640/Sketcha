@@ -1,3 +1,5 @@
+"use client";
+
 import { LockButton } from "./lockbutton";
 import { ToolButton } from "./toolbutton";
 import {
@@ -15,7 +17,7 @@ import {
   MousePointer,
 } from "lucide-react";
 
-export async function ToolArea() {
+export function ToolArea() {
   return (
     <div className="fixed bottom-3 md:bottom-auto md:top-6 left-1/2 -translate-x-1/2 z-50">
       <div

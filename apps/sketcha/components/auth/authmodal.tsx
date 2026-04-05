@@ -51,7 +51,7 @@ export function AuthModal({ type }: AuthModalProps) {
           name: nameRef.current!.value,
           email: emailRef.current!.value,
           password: passwordRef.current!.value,
-          callbackURL: "/canvas/guest",
+          callbackURL: "/canvas/user",
         },
         {
           onRequest: (ctx) => {
@@ -61,7 +61,7 @@ export function AuthModal({ type }: AuthModalProps) {
             console.log("redirecting .....");
           },
           onSuccess: (ctx) => {
-            redirect("/canvas/guest");
+            redirect("/canvas/user");
           },
           onError: (ctx) => {
             alert(ctx.error.message);
