@@ -10,20 +10,27 @@ import {
 
 export async function GET(request: Request) {
   try {
-    const body = await request.json();
-    if (!body) {
-      return NextResponse.json(
-        {
-          error: "body may be empty or missing",
-        },
-        { status: 404 },
-      );
+    // const body = await request.json();
+    // if (!body) {
+    //   return NextResponse.json(
+    //     {
+    //       error: "body may be empty or missing",
+    //     },
+    //     { status: 404 },
+    //   );
+    // }
+    // const req = ConvertGetJSON(body);
+
+    const { searchParams } = new URL(request.url);
+    const canvasId = searchParams.get("canvasId");
+    
+    if(canvasId === null) {
+      return NextResponse.json({msg: "canvas id not found!"}, {status: 404});
     }
-    const req = ConvertGetJSON(body);
 
     const canvas = await prisma.canvas.findUnique({
       where: {
-        id: req.id,
+        id: canvasId,
       },
     });
 

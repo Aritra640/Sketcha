@@ -17,8 +17,10 @@ function CanvasNameModal() {
 
     const newCanvasName = canvasNameRef.current.value.trim();
     const newCanvas: CanvasData = {
-      name: newCanvasName,
       id: canvas.id,
+      title: newCanvasName,
+      userId: canvas.userId,
+      createdAt: canvas.createdAt,
     };
     setCanvas(newCanvas);
 
@@ -71,6 +73,9 @@ export function CurrentCanvasInformation() {
   const [canvas] = useAtom(canvasDataAtom);
   const [, setMenu] = useAtom(canvasNameAtom);
 
+  console.log("canvas details: ", canvas);
+  console.log("canvas details name: ", canvas.title);
+
   return (
     <div className="">
       <CanvasNameModal />
@@ -78,7 +83,7 @@ export function CurrentCanvasInformation() {
         className="btn rounded-xl btn-primary hover:bg-collab bg-menu"
         onClick={() => setMenu(true)}
       >
-        {canvas.name}
+        {canvas.title}
       </button>
     </div>
   );

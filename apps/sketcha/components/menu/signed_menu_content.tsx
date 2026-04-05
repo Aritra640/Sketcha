@@ -8,6 +8,10 @@ export function SignedMenuContent() {
   const isSigned = user.isGuest;
 
   if (isSigned == false) return null;
+  if (isSigned === undefined) {
+    console.error("Error in Signed manu content, isSgined undefined");
+    return null;
+  }
 
   return (
     <div className="w-full h-full flex flex-col justify-between">

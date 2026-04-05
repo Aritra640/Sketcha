@@ -23,7 +23,10 @@ const sampleUserData: UserDataType = {
 export const userDataAtom = atom<UserDataType>(sampleUserData);
 
 const sampleCanvasData: CanvasData = {
-  name: "#1312d3e2",
+  title: "#1312d3e2",
+  id: "123",
+  userId: "0000",
+  createdAt: new Date
 };
 
 export const canvasDataAtom = atom<CanvasData>(sampleCanvasData);

@@ -2,8 +2,8 @@ import { auth } from "@repo/db_auth_service";
 import { headers } from "next/headers";
 import { UserDataType } from "../../../../../store/types/user";
 import { CanvasPageComponent } from "../../../../../components/canvas/canvas_page";
-import { CanvasData } from "../../../../../store/types/canvas";
 import { GetCanvasData } from "../../../../../utils/APIhandler";
+import { CanvasData } from "../../../../../store/types/canvas";
 
 type CanvasPageProps = {
   params: Promise<{
@@ -38,7 +38,9 @@ export default async function Page({ params }: CanvasPageProps) {
   if (canvasData === null) {
     return <div>Something went wrong!</div>
   }
+  console.log(userData);
+  console.log(canvasData);
   return (
-    <CanvasPageComponent userData={userData} />
+    <CanvasPageComponent canvasData={canvasData} userData={userData} />
   );
 }

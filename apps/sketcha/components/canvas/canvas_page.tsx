@@ -15,13 +15,18 @@ interface CanvasPageComponentProp {
   canvasData?: CanvasData;
 }
 
-export function CanvasPageComponent({ userData, canvasData }: CanvasPageComponentProp) {
+export function CanvasPageComponent({
+  userData,
+  canvasData,
+}: CanvasPageComponentProp) {
   const [user, setUser] = useAtom(userDataAtom);
   const [canvas, setCanvas] = useAtom(canvasDataAtom);
   useEffect(() => {
     setUser(userData);
 
-    if(!userData.isGuest && canvasData !== undefined) {
+    if (!userData.isGuest && canvasData !== undefined) {
+      console.log(user);
+      console.log(canvas);
       setCanvas(canvasData);
     }
   });

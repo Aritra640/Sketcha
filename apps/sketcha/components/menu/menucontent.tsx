@@ -1,7 +1,7 @@
 "use client";
 
 import { useAtom } from "jotai";
-import { menuAtom, userDataAtom, userModeAtom } from "../../store/state/state";
+import { menuAtom, userDataAtom } from "../../store/state/state";
 import { AuthButton } from "../auth/button";
 import { SignedMenuContent } from "./signed_menu_content";
 import { CurrentCanvasInformation } from "./current_canvas/canvas_details";
@@ -68,10 +68,9 @@ function GuestUserAdvertisement() {
 }
 
 export function MenuContent() {
-  const [userMode] = useAtom(userModeAtom);
   const [userData] = useAtom(userDataAtom);
 
-  const isGuest = userMode === "guest";
+  const isGuest = userData.isGuest;
   const username = isGuest ? userData.GuestName : userData.name;
 
   return (
@@ -89,16 +88,18 @@ export function MenuContent() {
 
       {isGuest && <GuestUserAdvertisement />}
       {!isGuest && (
-        <div className="pt-8 w-full">
-          <div className="w-full flex justify-center items-center">
-            <CurrentCanvasInformation />
+        <>
+          <div className="pt-8 w-full">
+            <div className="w-full flex justify-center items-center">
+              <CurrentCanvasInformation />
+            </div>
+            <div className="p-2 text-xs text-center font-mono text-slate-500">
+              canvas name, click to update
+            </div>
           </div>
-          <div className="p-2 text-xs text-center font-mono text-slate-500">
-            canvas name, click to update
-          </div>
-        </div>
+          <SignedMenuContent />
+        </>
       )}
-      {!isGuest && <SignedMenuContent />}
 
       <div className="md:hidden pt-20">
         <CloseMenu />

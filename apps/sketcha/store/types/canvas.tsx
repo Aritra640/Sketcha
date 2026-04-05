@@ -1,9 +1,7 @@
+import { CanvasResponse } from "../../utils/canvasAPI_utils";
 import { UserDataType } from "./user";
 
-export type CanvasData = {
-  id? : string;
-  name?: string;
-}
+export type CanvasData = CanvasResponse
 
 export type CanvasUserCombinedData = {
   canvasid?: string;
