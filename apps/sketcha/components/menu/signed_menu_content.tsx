@@ -2,17 +2,11 @@ import { useAtom } from "jotai";
 import { userDataAtom } from "../../store/state/state";
 import { MenuFeature } from "./menu_feature_menu/menu_feature_button";
 import { LogOut, Paintbrush2, Palette, Settings, Share2 } from "lucide-react";
+import { LogoutButton } from "../auth/logout";
 
 export function SignedMenuContent() {
   const [user] = useAtom(userDataAtom);
-  const isSigned = user.isGuest;
-
-  if (isSigned == false) return null;
-  if (isSigned === undefined) {
-    console.error("Error in Signed manu content, isSgined undefined");
-    return null;
-  }
-
+  console.log("SignedMenuContent: ", user);
   return (
     <div className="w-full h-full flex flex-col justify-between">
       <div className="w-full">
@@ -29,9 +23,7 @@ export function SignedMenuContent() {
       </div>
 
       <div className="w-full">
-        <div className="w-full p-4">
-          <MenuFeature name="log out" icon={<LogOut />} />
-        </div>
+        <LogoutButton />
       </div>
     </div>
   );

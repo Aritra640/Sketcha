@@ -3,7 +3,6 @@ import { headers } from "next/headers";
 import { UserDataType } from "../../../../../store/types/user";
 import { CanvasPageComponent } from "../../../../../components/canvas/canvas_page";
 import { GetCanvasData } from "../../../../../utils/APIhandler";
-import { CanvasData } from "../../../../../store/types/canvas";
 
 type CanvasPageProps = {
   params: Promise<{
