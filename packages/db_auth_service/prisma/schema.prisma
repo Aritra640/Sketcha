@@ -112,3 +112,7 @@ enum ToolType {
   text
   none
 }
+
+model AnonymousPaste {
+  id String  @id @default(uuid())
+}
