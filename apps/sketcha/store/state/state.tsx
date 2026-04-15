@@ -26,7 +26,12 @@ const sampleCanvasData: CanvasData = {
   title: "#1312d3e2",
   id: "123",
   userId: "0000",
-  createdAt: new Date
+  createdAt: new Date(),
 };
 
 export const canvasDataAtom = atom<CanvasData>(sampleCanvasData);
+
+export const yourCanvasesAtom = atom<true | false>(false);
+export const canvasSettingsAtom = atom<true | false>(false);
+export const shareAtom = atom<true | false>(false);
+export const userSettingsAtom = atom<true | false>(false);

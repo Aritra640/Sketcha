@@ -80,7 +80,7 @@ export function CurrentCanvasInformation() {
     <div className="">
       <CanvasNameModal />
       <button
-        className="btn rounded-xl btn-primary hover:bg-collab bg-menu"
+        className="btn rounded-xl btn-ghost hover:bg-selectedtool"
         onClick={() => setMenu(true)}
       >
         {canvas.title}
