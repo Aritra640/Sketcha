@@ -16,13 +16,32 @@ function Avatar({ letter }: { letter: string }) {
   );
 }
 
+function ImageAvatar({ url, alt }: { url: string; alt: string }) {
+  return (
+    <div className="avatar">
+      <div className="w-20 rounded-full overflow-hidden shadow-lg ring-2 ring-slate-700">
+        <img
+          src={url}
+          alt={alt}
+          referrerPolicy="no-referrer"
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src =
+              "https://ui-avatars.com/api/?name=" +
+              encodeURIComponent(alt);
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
 function Feature({ icon, text }: { icon: string; text: string }) {
   return (
     <div className="flex items-center gap-3 text-sm text-slate-300 hover:text-white transition">
       <div className="flex items-center justify-center w-7 h-7 rounded-md bg-slate-800 text-sm">
         {icon}
       </div>
-
       <span>{text}</span>
     </div>
   );
@@ -56,9 +75,7 @@ function GuestUserAdvertisement() {
 
       <div className="flex flex-col gap-3 mb-5">
         <Feature icon="💾" text="Save your canvases" />
-
         <Feature icon="🤝" text="Collaborate with teammates" />
-
         <Feature icon="☁️" text="Access your work anywhere" />
       </div>
 
@@ -72,22 +89,36 @@ export function MenuContent() {
 
   const isGuest = userData.isGuest;
   const username = isGuest ? userData.GuestName : userData.name;
+  const isAvatarNull = !userData.avatarURL;
 
   return (
     <div className="w-full h-full px-5 py-8 flex flex-col items-center">
-      <Avatar letter={username?.[0]?.toUpperCase() ?? "U"} />
-
-      <div className="mt-4 text-lg font-mono text-slate-200">{username}</div>
-
-      {isGuest && (
-        <span className="text-xs text-slate-500 mt-1">Guest session</span>
-      )}
-      {!isGuest && (
-        <span className="text-xs text-slate-500 mt-1">Signed user</span>
+      {isAvatarNull ? (
+        <Avatar letter={username?.[0]?.toUpperCase() ?? "U"} />
+      ) : (
+        <ImageAvatar
+          url={userData.avatarURL!}
+          alt={username ?? "User"}
+        />
       )}
 
-      {isGuest && <GuestUserAdvertisement />}
-      {!isGuest && (
+      <div className="mt-4 text-lg font-mono text-slate-200">
+        {username}
+      </div>
+
+      {isGuest ? (
+        <span className="text-xs text-slate-500 mt-1">
+          Guest session
+        </span>
+      ) : (
+        <span className="text-xs text-slate-500 mt-1">
+          Signed user
+        </span>
+      )}
+
+      {isGuest ? (
+        <GuestUserAdvertisement />
+      ) : (
         <>
           <div className="pt-8 w-full">
             <div className="w-full flex justify-center items-center">
@@ -97,6 +128,7 @@ export function MenuContent() {
               canvas name, click to update
             </div>
           </div>
+
           <SignedMenuContent />
         </>
       )}

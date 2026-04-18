@@ -35,3 +35,6 @@ export const yourCanvasesAtom = atom<true | false>(false);
 export const canvasSettingsAtom = atom<true | false>(false);
 export const shareAtom = atom<true | false>(false);
 export const userSettingsAtom = atom<true | false>(false);
+
+
+export const googleSigninAtom = atom<true|false>(true);

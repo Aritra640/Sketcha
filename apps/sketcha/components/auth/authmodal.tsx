@@ -1,9 +1,11 @@
 "use client";
 
-import {authClient} from "@repo/db_auth_service/client"
+import { authClient } from "@repo/db_auth_service/client";
+import { useAtom } from "jotai";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useRef } from "react";
+import { googleSigninAtom } from "../../store/state/state";
 
 interface AuthModalProps {
   type: "signin" | "signup";
@@ -16,6 +18,19 @@ export function AuthModal({ type }: AuthModalProps) {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
+  const [googleSignin, setGoogleSignin] = useAtom(googleSigninAtom);
+
+  async function GoogleAuth(e: any) {
+    e.preventDefault();
+
+    const { data, error } = await authClient.signIn.social(
+      {
+        provider: "google",
+        callbackURL: "/canvas/user",
+      },
+    );
+  }
+
   async function HandleSubmit(e: any) {
     e.preventDefault();
 
@@ -23,24 +38,28 @@ export function AuthModal({ type }: AuthModalProps) {
       if (emailRef === null) return;
       if (passwordRef === null) return;
 
-      const { data, error } = await authClient.signIn.email({
-        email: emailRef.current!.value,
-        password: passwordRef.current!.value,
-        callbackURL: "/canvas/user",
-        rememberMe: true,
-      },{
+      const { data, error } = await authClient.signIn.email(
+        {
+          email: emailRef.current!.value,
+          password: passwordRef.current!.value,
+          callbackURL: "/canvas/user",
+          rememberMe: true,
+        },
+        {
           onRequest: (ctx) => {
             console.log("rediecting ...");
           },
           onSuccess: (ctx) => {
             console.log("signed successfully!");
+            setGoogleSignin(false);
+            console.log("Google signin: " , googleSignin);
             redirect("/canvas/user");
           },
           onError: (ctx) => {
             console.log(ctx.error.message);
-          }
-        });
-
+          },
+        },
+      );
     } else if (!isSignin) {
       if (nameRef === null) return;
       if (emailRef === null) return;
@@ -61,6 +80,9 @@ export function AuthModal({ type }: AuthModalProps) {
             console.log("redirecting .....");
           },
           onSuccess: (ctx) => {
+            setGoogleSignin(false);
+            console.log("Google signin: " , googleSignin);
+            
             redirect("/canvas/user");
           },
           onError: (ctx) => {
@@ -111,7 +133,10 @@ export function AuthModal({ type }: AuthModalProps) {
             className="input input-bordered w-full"
           />
 
-          <button onClick={HandleSubmit} className="btn btn-primary w-full mt-2">
+          <button
+            onClick={HandleSubmit}
+            className="btn btn-primary w-full mt-2"
+          >
             {isSignin ? "Sign In" : "Sign Up"}
           </button>
 
@@ -119,7 +144,7 @@ export function AuthModal({ type }: AuthModalProps) {
           <div className="divider text-xs text-base-content/50">OR</div>
 
           {/* Google Button */}
-          <button className="btn w-full bg-white text-black border border-base-300 hover:bg-gray-50 flex items-center gap-3">
+          <button onClick={GoogleAuth} className="btn w-full bg-white text-black border border-base-300 hover:bg-gray-50 flex items-center gap-3">
             <svg
               aria-label="Google logo"
               width="18"
