@@ -3,81 +3,75 @@
 import { useAtom } from "jotai";
 import { Shapes } from "../../../../store/types/shapes/shapeProps";
 import { drawnAtom, selectedIdAtom } from "../../../../store/state/state";
-import { Line } from "react-konva";
-import { LineCap } from "konva/lib/Shape";
+import { Ellipse } from "react-konva";
 import Konva from "konva";
 
-interface LineProps {
+interface CircleProps {
   shape: Shapes;
 }
 
-export default function LineShape({ shape }: LineProps) {
+export default function CircleShape({ shape }: CircleProps) {
   const [selectedId, setSelectedId] = useAtom(selectedIdAtom);
   const [drawnShapes, setDrawnShapes] = useAtom(drawnAtom);
 
-  console.log("rendering at:", shape.x, shape.y);
-  console.log("line id: ", shape.id);
+  console.log("circle id: ", shape.id);
 
-  if (shape.type == "Line") {
+  if (shape.type === "Circle") {
     return (
-      <Line
+      <Ellipse
         id={shape.id}
         key={shape.id}
-        points={shape.points}
+        x={shape.x}
+        y={shape.y}
+        radiusX={shape.rx}
+        radiusY={shape.ry}
+        fill={shape.fill}
         stroke={shape.stroke}
         strokeWidth={shape.strokeWidth}
-        lineCap={shape.lineCap as LineCap} //TODO: type LineCap(konva) might cause error
-        y={shape.y}
-        x={shape.x}
         shadowBlur={shape.shadowBlur}
         draggable
         onClick={() => {
-          // e.cancelBubble = true;
           setSelectedId(shape.id);
         }}
         onTap={() => {
-          // e.cancelBubble = true;
           setSelectedId(shape.id);
         }}
         onDragEnd={(e) => {
-          const node = e.target as Konva.Line;
-          const newX = node.x();
-          const newY = node.y();
+          const node = e.target as Konva.Ellipse;
 
           setDrawnShapes((prev) =>
             prev.map((s) =>
-              s.id === shape.id && s.type == "Line"
-                ? { ...s, x: newX, y: newY }
+              s.id === shape.id && s.type === "Circle"
+                ? {
+                    ...s,
+                    x: node.x(),
+                    y: node.y(),
+                  }
                 : s,
             ),
           );
         }}
         onTransformEnd={(e) => {
-          const node = e.target as Konva.Line;
+          const node = e.target as Konva.Ellipse;
 
           const scaleX = node.scaleX();
           const scaleY = node.scaleY();
 
-          const oldPoints = node.points();
-
-          const newPoints = oldPoints.map(
-            (point, index) =>
-              index % 2 === 0
-                ? point * scaleX 
-                : point * scaleY,
-          );
+          const newRx = Math.max(5, shape.rx * scaleX);
+          const newRy = Math.max(5, shape.ry * scaleY);
 
           node.scaleX(1);
           node.scaleY(1);
 
           setDrawnShapes((prev) =>
             prev.map((s) =>
-              s.id === shape.id && s.type === "Line"
+              s.id === shape.id && s.type === "Circle"
                 ? {
                     ...s,
                     x: node.x(),
                     y: node.y(),
-                    points: newPoints,
+                    rx: newRx,
+                    ry: newRy,
                   }
                 : s,
             ),

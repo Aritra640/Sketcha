@@ -2,19 +2,30 @@
 
 import { useAtom } from "jotai";
 import { useState, useEffect, useRef } from "react";
-import { Stage, Layer, Rect, Transformer } from "react-konva";
+import { Stage, Layer, Transformer, Line } from "react-konva";
 import Konva from "konva";
+
 import { drawnAtom, selectedIdAtom, toolAtom } from "../../store/state/state";
-import { DrawRect } from "./shapes/rect/initRect";
+
 import Rectangle from "./shapes/rect/Rect";
+import { Shapes } from "../../store/types/shapes/shapeProps";
+import { startRect, updateRect } from "./shapes/handlers/rect";
+import { startLine, updateLine } from "./shapes/handlers/line";
 import LineShape from "./shapes/line/Line";
-import { DrawLine } from "./shapes/line/initLine";
+import { startCircle, updateCircle } from "./shapes/handlers/circle";
+import CircleShape from "./shapes/circle/Circle";
+import { startArrow, updateArrow } from "./shapes/handlers/arrow";
+import ArrowShape from "./shapes/arrow/Arrow";
+import { startPencil, updatePencil } from "./shapes/handlers/pencil";
+import PencilShape from "./shapes/pencil/Pencil";
 
 export function Canvas() {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [drawnShapes, setDrawnShapes] = useAtom(drawnAtom);
   const [selectedId, setSelectedId] = useAtom(selectedIdAtom);
   const [curTool] = useAtom(toolAtom);
+
+  const [draftShape, setDraftShape] = useState<Shapes | null>(null);
 
   const transformerRef = useRef<Konva.Transformer | null>(null);
 
@@ -28,7 +39,6 @@ export function Canvas() {
 
     updateWindowSize();
     window.addEventListener("resize", updateWindowSize);
-
     return () => window.removeEventListener("resize", updateWindowSize);
   }, []);
 
@@ -40,12 +50,8 @@ export function Canvas() {
     if (!stage) return;
 
     if (selectedId) {
-      const selectedNode = stage.findOne(`#${selectedId}`);
-      if (selectedNode) {
-        transformer.nodes([selectedNode]);
-      } else {
-        transformer.nodes([]);
-      }
+      const node = stage.findOne(`#${selectedId}`);
+      transformer.nodes(node ? [node] : []);
     } else {
       transformer.nodes([]);
     }
@@ -55,10 +61,9 @@ export function Canvas() {
 
   return (
     <Stage
-      className=""
       width={dimensions.width}
       height={dimensions.height}
-      onClick={(e) => {
+      onMouseDown={(e) => {
         const stage = e.target.getStage();
         const pointer = stage?.getPointerPosition();
         if (!pointer) return;
@@ -66,36 +71,88 @@ export function Canvas() {
         if (e.target === stage) {
           setSelectedId(null);
 
-          if (curTool == "rect") {
-            const newRect = DrawRect(pointer);
-            setDrawnShapes((prev) => [...prev, newRect]);
+          if (curTool === "rect") {
+            setDraftShape(startRect(pointer));
           }
 
           if (curTool == "line") {
-            const newLine = DrawLine(pointer);
-            setDrawnShapes((prev) => [...prev, newLine]);
+            setDraftShape(startLine(pointer));
+          }
+
+          if (curTool === "circle") {
+            setDraftShape(startCircle(pointer));
+          }
+
+          if (curTool === "arrow") {
+            setDraftShape(startArrow(pointer));
+          }
+
+          if (curTool === "pen") {
+            setDraftShape(startPencil(pointer));
           }
         }
       }}
+      onMouseMove={(e) => {
+        const stage = e.target.getStage();
+        const pointer = stage?.getPointerPosition();
+        if (!pointer || !draftShape) return;
+
+        if (draftShape.type === "Rect") {
+          setDraftShape(updateRect(draftShape, pointer));
+        }
+
+        if (draftShape.type === "Line") {
+          setDraftShape(updateLine(draftShape, pointer));
+        }
+
+        if (draftShape.type === "Circle") {
+          setDraftShape(updateCircle(draftShape, pointer));
+        }
+
+        if (draftShape.type === "Arrow") {
+          setDraftShape(updateArrow(draftShape, pointer));
+        }
+
+        if (draftShape.type === "Pencil") {
+          setDraftShape(updatePencil(draftShape, pointer));
+        }
+      }}
+      onMouseUp={() => {
+        if (!draftShape) return;
+
+        setDrawnShapes((prev) => [...prev, draftShape]);
+        setDraftShape(null);
+      }}
     >
       <Layer>
-        {drawnShapes.map((shape, i) => {
-          console.log("shape type: ", shape.type, " i: ", i);
+        {drawnShapes.map((shape) => {
           switch (shape.type) {
             case "Rect":
-              return (
-                  <Rectangle key={shape.id} shape={shape} />
-              );
-
+              return <Rectangle key={shape.id} shape={shape} />;
             case "Line":
-              return (
-                  <LineShape key={shape.id} shape={shape} />
-              );
-
+              return <LineShape key={shape.id} shape={shape} />;
+            case "Circle":
+              return <CircleShape key={shape.id} shape={shape} />;
+            case "Arrow":
+              return <ArrowShape key={shape.id} shape={shape} />;
+            case "Pencil":
+              return <PencilShape key={shape.id} shape={shape} />;
             default:
               return null;
           }
         })}
+
+        {draftShape && draftShape.type === "Rect" && (
+          <Rectangle shape={draftShape} />
+        )}
+
+        {draftShape?.type === "Line" && <LineShape shape={draftShape} />}
+
+        {draftShape?.type === "Circle" && <CircleShape shape={draftShape} />}
+
+        {draftShape?.type === "Arrow" && <ArrowShape shape={draftShape} />}
+
+        {draftShape?.type === "Pencil" && <PencilShape shape={draftShape} />}
 
         <Transformer ref={transformerRef} />
       </Layer>

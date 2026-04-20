@@ -3,68 +3,59 @@
 import { useAtom } from "jotai";
 import { Shapes } from "../../../../store/types/shapes/shapeProps";
 import { drawnAtom, selectedIdAtom } from "../../../../store/state/state";
-import { Line } from "react-konva";
-import { LineCap } from "konva/lib/Shape";
+import { Arrow } from "react-konva";
 import Konva from "konva";
 
-interface LineProps {
+interface ArrowProps {
   shape: Shapes;
 }
 
-export default function LineShape({ shape }: LineProps) {
+export default function ArrowShape({ shape }: ArrowProps) {
   const [selectedId, setSelectedId] = useAtom(selectedIdAtom);
   const [drawnShapes, setDrawnShapes] = useAtom(drawnAtom);
 
-  console.log("rendering at:", shape.x, shape.y);
-  console.log("line id: ", shape.id);
-
-  if (shape.type == "Line") {
+  if (shape.type === "Arrow") {
     return (
-      <Line
+      <Arrow
         id={shape.id}
         key={shape.id}
+        x={shape.x}
+        y={shape.y}
         points={shape.points}
         stroke={shape.stroke}
         strokeWidth={shape.strokeWidth}
-        lineCap={shape.lineCap as LineCap} //TODO: type LineCap(konva) might cause error
-        y={shape.y}
-        x={shape.x}
         shadowBlur={shape.shadowBlur}
-        draggable
-        onClick={() => {
-          // e.cancelBubble = true;
-          setSelectedId(shape.id);
-        }}
-        onTap={() => {
-          // e.cancelBubble = true;
-          setSelectedId(shape.id);
-        }}
+        pointerLength={shape.pointerLength}
+        pointerWidth={shape.pointerWidth}
+        lineCap={shape.lineCap}
+        draggable={shape.id === selectedId}
+        onClick={() => setSelectedId(shape.id)}
+        onTap={() => setSelectedId(shape.id)}
         onDragEnd={(e) => {
-          const node = e.target as Konva.Line;
-          const newX = node.x();
-          const newY = node.y();
+          const node = e.target as Konva.Arrow;
 
           setDrawnShapes((prev) =>
             prev.map((s) =>
-              s.id === shape.id && s.type == "Line"
-                ? { ...s, x: newX, y: newY }
+              s.id === shape.id && s.type === "Arrow"
+                ? {
+                    ...s,
+                    x: node.x(),
+                    y: node.y(),
+                  }
                 : s,
             ),
           );
         }}
         onTransformEnd={(e) => {
-          const node = e.target as Konva.Line;
+          const node = e.target as Konva.Arrow;
 
           const scaleX = node.scaleX();
           const scaleY = node.scaleY();
 
           const oldPoints = node.points();
 
-          const newPoints = oldPoints.map(
-            (point, index) =>
-              index % 2 === 0
-                ? point * scaleX 
-                : point * scaleY,
+          const newPoints = oldPoints.map((p, i) =>
+            i % 2 === 0 ? p * scaleX : p * scaleY,
           );
 
           node.scaleX(1);
@@ -72,7 +63,7 @@ export default function LineShape({ shape }: LineProps) {
 
           setDrawnShapes((prev) =>
             prev.map((s) =>
-              s.id === shape.id && s.type === "Line"
+              s.id === shape.id && s.type === "Arrow"
                 ? {
                     ...s,
                     x: node.x(),

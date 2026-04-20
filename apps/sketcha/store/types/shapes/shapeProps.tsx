@@ -30,10 +30,47 @@ export interface LineProp {
   points: number[];
   stroke: string;
   strokeWidth: number;
-  LineCap: string;
   y: number;
   x: number;
   shadowBlur: number;
+  lineCap: "butt" | "round" | "square";
 }
 
-export type Shapes = RectProps|LineProp|CircleProp;
+export interface ArrowProp {
+  type: "Arrow";
+  id: string;
+
+  x: number;
+  y: number;
+
+  points: number[];
+
+  stroke: string;
+  strokeWidth: number;
+  shadowBlur: number;
+
+  pointerLength: number;
+  pointerWidth: number;
+
+  lineCap: "butt" | "round" | "square";
+}
+
+export interface PencilProp {
+  type: "Pencil";
+  id: string;
+
+  x: number;
+  y: number;
+
+  points: number[];
+
+  stroke: string;
+  strokeWidth: number;
+  shadowBlur: number;
+
+  lineCap: "round" | "butt" | "square";
+  lineJoin: "round" | "bevel" | "miter";
+}
+
+
+export type Shapes = RectProps|LineProp|CircleProp|ArrowProp|PencilProp;
