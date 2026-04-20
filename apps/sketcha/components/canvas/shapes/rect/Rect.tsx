@@ -4,17 +4,18 @@ import { Rect } from "react-konva";
 import { Shapes } from "../../../../store/types/shapes/shapeProps";
 import Konva from "konva";
 import { useAtom } from "jotai";
-import { drawnAtom, selectedIdAtom } from "../../../../store/state/state";
+import { drawnAtom, selectedIdAtom, toolAtom } from "../../../../store/state/state";
 
 interface RectangleProps {
   shape: Shapes;
 }
 
-export default function Rectangle({shape}:RectangleProps) {
+export default function Rectangle({ shape }: RectangleProps) {
   const [selectedId, setSelectedId] = useAtom(selectedIdAtom);
   const [drawnShapes, setDrawnShapes] = useAtom(drawnAtom);
+  const [curTool] = useAtom(toolAtom);
 
-  console.log("rect id: " , shape.id);
+  console.log("rect id: ", shape.id);
 
   if (shape.type == "Rect") {
     return (
@@ -29,7 +30,8 @@ export default function Rectangle({shape}:RectangleProps) {
         strokeWidth={shape.strokeWidth}
         shadowBlur={shape.shadowBlur}
         cornerRadius={shape.cornerRadius}
-        draggable
+        draggable={curTool === "cursor"}
+        listening={curTool === "cursor"}
         onClick={() => {
           // e.cancelBubble = true;
           setSelectedId(shape.id);

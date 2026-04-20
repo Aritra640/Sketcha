@@ -2,7 +2,7 @@
 
 import { useAtom } from "jotai";
 import { Shapes } from "../../../../store/types/shapes/shapeProps";
-import { drawnAtom, selectedIdAtom } from "../../../../store/state/state";
+import { drawnAtom, selectedIdAtom, toolAtom } from "../../../../store/state/state";
 import { Line } from "react-konva";
 import Konva from "konva";
 
@@ -13,6 +13,7 @@ interface PencilProps {
 export default function PencilShape({ shape }: PencilProps) {
   const [selectedId, setSelectedId] = useAtom(selectedIdAtom);
   const [drawnShapes, setDrawnShapes] = useAtom(drawnAtom);
+  const [curTool] = useAtom(toolAtom);
 
   if (shape.type === "Pencil") {
     return (
@@ -29,6 +30,7 @@ export default function PencilShape({ shape }: PencilProps) {
         lineJoin={shape.lineJoin}
         tension={0.5} // smooths the line nicely
         draggable={shape.id === selectedId}
+        listening = {curTool === "cursor"}
         onClick={() => setSelectedId(shape.id)}
         onTap={() => setSelectedId(shape.id)}
         onDragEnd={(e) => {

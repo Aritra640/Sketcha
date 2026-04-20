@@ -7,10 +7,16 @@ export function startRect(pointer: Vector2d): RectProps {
   return {
     type: "Rect",
     id: crypto.randomUUID(),
+
     x: pointer.x,
     y: pointer.y,
     width: 0,
     height: 0,
+
+    // ✅ FIXED anchor
+    startX: pointer.x,
+    startY: pointer.y,
+
     stroke: "white",
     strokeWidth: 2,
     shadowBlur: 5,
@@ -18,23 +24,24 @@ export function startRect(pointer: Vector2d): RectProps {
   };
 }
 
-export function updateRect(
-  shape: Shapes,
-  pointer: Vector2d
-): Shapes {
+
+export function updateRect(shape: Shapes, pointer: Vector2d): Shapes {
   if (shape.type !== "Rect") return shape;
 
-  const startX = shape.x;
-  const startY = shape.y;
+  const startX = shape.startX;
+  const startY = shape.startY;
 
-  const width = pointer.x - startX;
-  const height = pointer.y - startY;
+  const newX = Math.min(startX, pointer.x);
+  const newY = Math.min(startY, pointer.y);
+
+  const newWidth = Math.abs(pointer.x - startX);
+  const newHeight = Math.abs(pointer.y - startY);
 
   return {
     ...shape,
-    x: width < 0 ? pointer.x : startX,
-    y: height < 0 ? pointer.y : startY,
-    width: Math.abs(width),
-    height: Math.abs(height),
+    x: newX,
+    y: newY,
+    width: newWidth,
+    height: newHeight,
   };
 }

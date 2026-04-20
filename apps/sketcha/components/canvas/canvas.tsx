@@ -2,10 +2,14 @@
 
 import { useAtom } from "jotai";
 import { useState, useEffect, useRef } from "react";
-import { Stage, Layer, Transformer, Line } from "react-konva";
+import { Stage, Layer, Transformer } from "react-konva";
 import Konva from "konva";
 
-import { drawnAtom, selectedIdAtom, toolAtom } from "../../store/state/state";
+import {
+  drawnAtom,
+  selectedIdAtom,
+  toolAtom,
+} from "../../store/state/state";
 
 import Rectangle from "./shapes/rect/Rect";
 import { Shapes } from "../../store/types/shapes/shapeProps";
@@ -28,7 +32,27 @@ export function Canvas() {
   const [draftShape, setDraftShape] = useState<Shapes | null>(null);
 
   const transformerRef = useRef<Konva.Transformer | null>(null);
+  const stageRef = useRef<Konva.Stage | null>(null);
 
+  const [isErasing, setIsErasing] = useState(false);
+
+  // ✅ Cursor control
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const container = stage.container();
+
+    if (curTool === "erasure") {
+      container.style.cursor = isErasing ? "cell" : "crosshair";
+    } else if (curTool === "cursor") {
+      container.style.cursor = "default";
+    } else {
+      container.style.cursor = "crosshair";
+    }
+  }, [curTool, isErasing]);
+
+  // ✅ Resize
   useEffect(() => {
     const updateWindowSize = () => {
       setDimensions({
@@ -42,12 +66,20 @@ export function Canvas() {
     return () => window.removeEventListener("resize", updateWindowSize);
   }, []);
 
+  // ✅ Transformer control (STRICT)
   useEffect(() => {
     const transformer = transformerRef.current;
     if (!transformer) return;
 
     const stage = transformer.getStage();
     if (!stage) return;
+
+    // ❗ HARD BLOCK outside cursor mode
+    if (curTool !== "cursor") {
+      transformer.nodes([]);
+      transformer.getLayer()?.batchDraw();
+      return;
+    }
 
     if (selectedId) {
       const node = stage.findOne(`#${selectedId}`);
@@ -57,10 +89,11 @@ export function Canvas() {
     }
 
     transformer.getLayer()?.batchDraw();
-  }, [selectedId]);
+  }, [selectedId, curTool]);
 
   return (
     <Stage
+      ref={stageRef}
       width={dimensions.width}
       height={dimensions.height}
       onMouseDown={(e) => {
@@ -68,6 +101,29 @@ export function Canvas() {
         const pointer = stage?.getPointerPosition();
         if (!pointer) return;
 
+        // ✅ ERASER
+        if (curTool === "erasure") {
+          setIsErasing(true);
+          return;
+        }
+
+        // ❗ BLOCK ALL INTERACTION unless cursor tool
+        if (curTool !== "cursor" && e.target !== stage) {
+          return;
+        }
+
+        // ✅ SELECTION MODE
+        if (curTool === "cursor") {
+          if (e.target === stage) {
+            setSelectedId(null);
+          } else {
+            const id = e.target.id();
+            if (id) setSelectedId(id);
+          }
+          return;
+        }
+
+        // ✅ DRAWING MODE
         if (e.target === stage) {
           setSelectedId(null);
 
@@ -75,7 +131,7 @@ export function Canvas() {
             setDraftShape(startRect(pointer));
           }
 
-          if (curTool == "line") {
+          if (curTool === "line") {
             setDraftShape(startLine(pointer));
           }
 
@@ -95,7 +151,28 @@ export function Canvas() {
       onMouseMove={(e) => {
         const stage = e.target.getStage();
         const pointer = stage?.getPointerPosition();
-        if (!pointer || !draftShape) return;
+        if (!pointer) return;
+
+        // ✅ ERASER
+        if (curTool === "erasure" && isErasing) {
+          if (!stage) return;
+
+          const node = stage.getIntersection(pointer);
+          if (!node) return;
+
+          const id = node.id();
+          if (!id) return;
+
+          setDrawnShapes((prev) =>
+            prev.filter((s) => s.id !== id)
+          );
+          return;
+        }
+
+        // ❗ NO DRAW UPDATE if in cursor mode
+        if (curTool === "cursor") return;
+
+        if (!draftShape) return;
 
         if (draftShape.type === "Rect") {
           setDraftShape(updateRect(draftShape, pointer));
@@ -118,6 +195,10 @@ export function Canvas() {
         }
       }}
       onMouseUp={() => {
+        setIsErasing(false);
+
+        if (curTool === "cursor") return;
+
         if (!draftShape) return;
 
         setDrawnShapes((prev) => [...prev, draftShape]);
@@ -146,13 +227,21 @@ export function Canvas() {
           <Rectangle shape={draftShape} />
         )}
 
-        {draftShape?.type === "Line" && <LineShape shape={draftShape} />}
+        {draftShape?.type === "Line" && (
+          <LineShape shape={draftShape} />
+        )}
 
-        {draftShape?.type === "Circle" && <CircleShape shape={draftShape} />}
+        {draftShape?.type === "Circle" && (
+          <CircleShape shape={draftShape} />
+        )}
 
-        {draftShape?.type === "Arrow" && <ArrowShape shape={draftShape} />}
+        {draftShape?.type === "Arrow" && (
+          <ArrowShape shape={draftShape} />
+        )}
 
-        {draftShape?.type === "Pencil" && <PencilShape shape={draftShape} />}
+        {draftShape?.type === "Pencil" && (
+          <PencilShape shape={draftShape} />
+        )}
 
         <Transformer ref={transformerRef} />
       </Layer>

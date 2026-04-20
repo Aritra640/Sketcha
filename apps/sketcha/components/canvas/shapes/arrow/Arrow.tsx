@@ -2,7 +2,7 @@
 
 import { useAtom } from "jotai";
 import { Shapes } from "../../../../store/types/shapes/shapeProps";
-import { drawnAtom, selectedIdAtom } from "../../../../store/state/state";
+import { drawnAtom, selectedIdAtom, toolAtom } from "../../../../store/state/state";
 import { Arrow } from "react-konva";
 import Konva from "konva";
 
@@ -14,6 +14,7 @@ export default function ArrowShape({ shape }: ArrowProps) {
   const [selectedId, setSelectedId] = useAtom(selectedIdAtom);
   const [drawnShapes, setDrawnShapes] = useAtom(drawnAtom);
 
+  const [curTool] = useAtom(toolAtom);
   if (shape.type === "Arrow") {
     return (
       <Arrow
@@ -29,6 +30,7 @@ export default function ArrowShape({ shape }: ArrowProps) {
         pointerWidth={shape.pointerWidth}
         lineCap={shape.lineCap}
         draggable={shape.id === selectedId}
+        listening = {curTool === "cursor"}
         onClick={() => setSelectedId(shape.id)}
         onTap={() => setSelectedId(shape.id)}
         onDragEnd={(e) => {

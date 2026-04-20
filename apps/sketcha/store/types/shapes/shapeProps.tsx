@@ -9,6 +9,8 @@ export interface RectProps {
   stroke: string;
   strokeWidth: number;
   cornerRadius: number[];
+  startX: number;
+  startY: number;
 }
 
 export interface CircleProp {

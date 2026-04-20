@@ -26,13 +26,22 @@ export function updatePencil(
 ): Shapes {
   if (shape.type !== "Pencil") return shape;
 
-  const newPoint = [
-    pointer.x - shape.x,
-    pointer.y - shape.y,
-  ];
+  const points = shape.points;
+  if (points.length < 2) return shape;
+
+  const lastX = points[points.length - 2];
+  const lastY = points[points.length - 1];
+
+  const newX = pointer.x - shape.x;
+  const newY = pointer.y - shape.y;
+
+  const dx = newX - lastX;
+  const dy = newY - lastY;
+
+  if (dx * dx + dy * dy < 4) return shape;
 
   return {
     ...shape,
-    points: [...shape.points, ...newPoint],
+    points: [...points, newX, newY],
   };
 }

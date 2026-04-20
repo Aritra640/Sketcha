@@ -2,7 +2,7 @@
 
 import { useAtom } from "jotai";
 import { Shapes } from "../../../../store/types/shapes/shapeProps";
-import { drawnAtom, selectedIdAtom } from "../../../../store/state/state";
+import { drawnAtom, selectedIdAtom, toolAtom } from "../../../../store/state/state";
 import { Ellipse } from "react-konva";
 import Konva from "konva";
 
@@ -13,6 +13,7 @@ interface CircleProps {
 export default function CircleShape({ shape }: CircleProps) {
   const [selectedId, setSelectedId] = useAtom(selectedIdAtom);
   const [drawnShapes, setDrawnShapes] = useAtom(drawnAtom);
+  const [curTool] = useAtom(toolAtom);
 
   console.log("circle id: ", shape.id);
 
@@ -30,6 +31,7 @@ export default function CircleShape({ shape }: CircleProps) {
         strokeWidth={shape.strokeWidth}
         shadowBlur={shape.shadowBlur}
         draggable
+        listening = {curTool === "cursor"}
         onClick={() => {
           setSelectedId(shape.id);
         }}
