@@ -13,7 +13,6 @@ interface CircleProps {
 export default function CircleShape({ shape }: CircleProps) {
   const [selectedId, setSelectedId] = useAtom(selectedIdAtom);
   const [drawnShapes, setDrawnShapes] = useAtom(drawnAtom);
-  const [curTool] = useAtom(toolAtom);
 
   console.log("circle id: ", shape.id);
 
@@ -31,7 +30,6 @@ export default function CircleShape({ shape }: CircleProps) {
         strokeWidth={shape.strokeWidth}
         shadowBlur={shape.shadowBlur}
         draggable
-        listening = {curTool === "cursor"}
         onClick={() => {
           setSelectedId(shape.id);
         }}

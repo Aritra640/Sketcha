@@ -27,7 +27,7 @@ export interface CircleProp {
 }
 
 export interface LineProp {
-  type: "Line"
+  type: "Line";
   id: string;
   points: number[];
   stroke: string;
@@ -74,5 +74,32 @@ export interface PencilProp {
   lineJoin: "round" | "bevel" | "miter";
 }
 
+export type ImageProp = {
+  id: string;
+  type: "Image";
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  src: string;
+};
 
-export type Shapes = RectProps|LineProp|CircleProp|ArrowProp|PencilProp;
+export type TextProp = {
+  id: string;
+  type: "Text";
+  x: number;
+  y: number;
+  text: string;
+  fontSize: number;
+  fill: string;
+  width?: number;
+};
+
+export type Shapes =
+  | RectProps
+  | LineProp
+  | CircleProp
+  | ArrowProp
+  | PencilProp
+  | ImageProp
+  | TextProp;

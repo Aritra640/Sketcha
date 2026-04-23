@@ -1,5 +1,6 @@
 "use client";
 
+import { ImageUploadTool } from "./imagebutton";
 import { LockButton } from "./lockbutton";
 import { ToolButton } from "./toolbutton";
 import {
@@ -70,10 +71,7 @@ export function ToolArea() {
           name="text"
           shape={<Type className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />}
         />
-        <ToolButton
-          name="image"
-          shape={<Image className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />}
-        />
+        <ImageUploadTool />
         <ToolButton
           name="more"
           shape={<Shapes className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />}

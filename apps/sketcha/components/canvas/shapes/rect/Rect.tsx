@@ -13,7 +13,6 @@ interface RectangleProps {
 export default function Rectangle({ shape }: RectangleProps) {
   const [selectedId, setSelectedId] = useAtom(selectedIdAtom);
   const [drawnShapes, setDrawnShapes] = useAtom(drawnAtom);
-  const [curTool] = useAtom(toolAtom);
 
   console.log("rect id: ", shape.id);
 
@@ -30,8 +29,7 @@ export default function Rectangle({ shape }: RectangleProps) {
         strokeWidth={shape.strokeWidth}
         shadowBlur={shape.shadowBlur}
         cornerRadius={shape.cornerRadius}
-        draggable={curTool === "cursor"}
-        listening={curTool === "cursor"}
+        draggable
         onClick={() => {
           // e.cancelBubble = true;
           setSelectedId(shape.id);

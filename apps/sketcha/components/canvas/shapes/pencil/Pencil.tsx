@@ -13,7 +13,6 @@ interface PencilProps {
 export default function PencilShape({ shape }: PencilProps) {
   const [selectedId, setSelectedId] = useAtom(selectedIdAtom);
   const [drawnShapes, setDrawnShapes] = useAtom(drawnAtom);
-  const [curTool] = useAtom(toolAtom);
 
   if (shape.type === "Pencil") {
     return (
@@ -30,7 +29,6 @@ export default function PencilShape({ shape }: PencilProps) {
         lineJoin={shape.lineJoin}
         tension={0.5} // smooths the line nicely
         draggable={shape.id === selectedId}
-        listening = {curTool === "cursor"}
         onClick={() => setSelectedId(shape.id)}
         onTap={() => setSelectedId(shape.id)}
         onDragEnd={(e) => {

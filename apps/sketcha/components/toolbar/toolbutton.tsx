@@ -14,6 +14,10 @@ export function ToolButton({ name, shape }: ToolButtonProps) {
 
   const isSelected = name === tool;
 
+  function OnClick() {
+    setTool(name);
+  }
+
   return (
     <button
       type="button"
@@ -22,7 +26,7 @@ export function ToolButton({ name, shape }: ToolButtonProps) {
           ? "bg-[var(--color-selectedtool)] text-white"
           : "bg-transparent hover:bg-white/10"
       }`}
-      onClick={() => setTool(name)}
+      onClick={OnClick}
     >
       <div className="">{shape}</div>
     </button>

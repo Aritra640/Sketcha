@@ -23,6 +23,7 @@
     "packages/*"
   ],
   "dependencies": {
-    "Sketcha": "."
+    "Sketcha": ".",
+    "use-image": "^1.1.4"
   }
 }

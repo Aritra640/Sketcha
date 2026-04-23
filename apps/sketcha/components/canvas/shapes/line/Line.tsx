@@ -14,7 +14,6 @@ interface LineProps {
 export default function LineShape({ shape }: LineProps) {
   const [selectedId, setSelectedId] = useAtom(selectedIdAtom);
   const [drawnShapes, setDrawnShapes] = useAtom(drawnAtom);
-  const [curTool] = useAtom(toolAtom);
 
   console.log("rendering at:", shape.x, shape.y);
   console.log("line id: ", shape.id);
@@ -32,7 +31,6 @@ export default function LineShape({ shape }: LineProps) {
         x={shape.x}
         shadowBlur={shape.shadowBlur}
         draggable
-        listening = {curTool === "cursor"}
         onClick={() => {
           // e.cancelBubble = true;
           setSelectedId(shape.id);
