@@ -46,7 +46,7 @@ export function SignedMenuContent() {
           <br />
           <div className="pt-3.5 w-full">
             <MenuFeature
-              name="your canvases"
+              name="Sketcha library"
               icon={<Palette />}
               onClick={() => setYourCanvas(!yourCanvas)}
             />

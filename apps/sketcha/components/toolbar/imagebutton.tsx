@@ -16,11 +16,21 @@ export function ImageUploadTool() {
     inputRef.current?.click();
   }
 
-  function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
+
     if (!file) return;
 
-    const url = URL.createObjectURL(file);
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
 
     setDrawnShapes((prev) => [
       ...prev,
@@ -31,7 +41,7 @@ export function ImageUploadTool() {
         y: 100,
         width: 200,
         height: 200,
-        src: url,
+        src: data.url,
       },
     ]);
 
