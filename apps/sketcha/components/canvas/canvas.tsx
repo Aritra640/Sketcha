@@ -30,6 +30,7 @@ import PencilShape from "./shapes/pencil/Pencil";
 
 import ImageShape from "./shapes/image/Image";
 import TextShapeComponent from "./shapes/text/Text";
+import { loadCanvas, saveCanvas } from "../../lib/persistence";
 
 export function Canvas() {
   const [dimensions, setDimensions] = useState({
@@ -46,6 +47,7 @@ export function Canvas() {
   const [curTool] = useAtom(toolAtom);
 
   const [draftShape, setDraftShape] = useState<Shapes | null>(null);
+  const canvasId = "main-canvas";
 
   const [isErasing, setIsErasing] = useState(false);
 
@@ -96,6 +98,27 @@ export function Canvas() {
 
     return () => window.removeEventListener("resize", updateWindowSize);
   }, []);
+
+  useEffect(() => {
+    async function hydrateCanvas() {
+      const savedShapes = await loadCanvas(canvasId);
+      if (savedShapes === null) {
+        console.log("local db shapes === null");
+      } else if (savedShapes.length > 0) {
+        setDrawnShapes(savedShapes);
+      }
+    }
+
+    hydrateCanvas();
+  }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      saveCanvas(canvasId, drawnShapes);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [drawnShapes]);
 
   useEffect(() => {
     const transformer = transformerRef.current;

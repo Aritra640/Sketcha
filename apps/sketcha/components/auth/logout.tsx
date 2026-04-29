@@ -17,8 +17,10 @@ export function LogoutButton() {
   }
 
   return (
-    <div onClick={handleLogout} className="w-full p-4">
-      <MenuFeature name="log out" icon={<LogOut />} />
+    <div>
+      <div onClick={handleLogout} className="w-full p-4 pt-5">
+        <MenuFeature name="log out" icon={<LogOut />} />
+      </div>
     </div>
   );
 }

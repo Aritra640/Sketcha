@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     const randomTitle = GetRandomCanvasName();
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/canvas`,
+      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/recent_canvas`,
       {
         method: "POST",
         headers: {

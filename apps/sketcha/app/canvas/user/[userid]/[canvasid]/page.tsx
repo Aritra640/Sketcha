@@ -26,20 +26,19 @@ export default async function Page({ params }: CanvasPageProps) {
       avatarURL: session.user.image == null ? undefined : session.user.image,
       isGuest: false,
       GuestName: undefined,
+      joinedAt: session.user.createdAt,
     };
   }
   const { userid, canvasid } = await params;
 
-  if(userData.id !== userid) {
-    return <div>Authentication failed!</div>
+  if (userData.id !== userid) {
+    return <div>Authentication failed!</div>;
   }
   const canvasData = await GetCanvasData(canvasid);
   if (canvasData === null) {
-    return <div>Something went wrong!</div>
+    return <div>Something went wrong!</div>;
   }
   console.log(userData);
   console.log(canvasData);
-  return (
-    <CanvasPageComponent canvasData={canvasData} userData={userData} />
-  );
+  return <CanvasPageComponent canvasData={canvasData} userData={userData} />;
 }

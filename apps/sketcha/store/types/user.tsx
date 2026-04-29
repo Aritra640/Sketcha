@@ -5,4 +5,5 @@ export type UserDataType = {
   email?: string;
   isGuest?: boolean;
   GuestName?: string;
+  joinedAt?: any;
 };

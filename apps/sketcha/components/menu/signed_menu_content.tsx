@@ -2,6 +2,7 @@
 
 import { useAtom } from "jotai";
 import {
+  addNewCanvasAtom,
   canvasSettingsAtom,
   collabAtom,
   shareAtom,
@@ -18,12 +19,14 @@ import {
   Share2,
   Share,
   Settings2,
+  Plus,
 } from "lucide-react";
 import { LogoutButton } from "../auth/logout";
 import { YourCanvasesModal } from "../menu_modals/your_canvases";
 import { ShareModal } from "../menu_modals/share";
 import { UserSettingsModal } from "../menu_modals/user_settings";
 import { CanvasSettingsModal } from "../menu_modals/canvas_settings";
+import { AddCanvasModal } from "../menu_modals/new_canvas";
 
 export function SignedMenuContent() {
   const [user] = useAtom(userDataAtom);
@@ -32,18 +35,27 @@ export function SignedMenuContent() {
 
   const [yourCanvas, setYourCanvas] = useAtom(yourCanvasesAtom);
   const [share, setShare] = useAtom(shareAtom);
+  const [addCanvas, setAddCanvas] = useAtom(addNewCanvasAtom);
   const [userSettings, setUserSettings] = useAtom(userSettingsAtom);
   const [canvasSettings, setCanvasSettings] = useAtom(canvasSettingsAtom);
 
   return (
     <div>
+      <AddCanvasModal />
       <YourCanvasesModal />
       <ShareModal />
       <UserSettingsModal />
       <CanvasSettingsModal />
-      <div className="w-full h-full flex flex-col justify-between">
+      <div className="p-2 w-full h-full flex flex-col justify-between">
         <div className="w-full">
           <br />
+          <div className="pt-3.5 w-full">
+            <MenuFeature
+              name="New sketch"
+              icon={<Plus />}
+              onClick={() => setAddCanvas(!addCanvas)}
+            />
+          </div>
           <div className="pt-3.5 w-full">
             <MenuFeature
               name="Sketcha library"
@@ -82,7 +94,6 @@ export function SignedMenuContent() {
         </div>
 
         <div className="w-full">
-          <br />
           <LogoutButton />
         </div>
       </div>

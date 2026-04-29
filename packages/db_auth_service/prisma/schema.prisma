@@ -77,6 +77,7 @@ model Canvas {
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   shapes    Shape[]
+  lastOpenedAt DateTime   @default(now())
 
   @@unique([userId, title])
 }
