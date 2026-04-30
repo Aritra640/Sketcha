@@ -33,6 +33,7 @@ import TextShapeComponent from "./shapes/text/Text";
 import { loadCanvas, saveCanvas } from "../../lib/persistence";
 
 export function Canvas() {
+
   const [dimensions, setDimensions] = useState({
     width: 0,
     height: 0,
