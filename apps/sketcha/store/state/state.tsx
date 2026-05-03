@@ -3,7 +3,7 @@ import { toolTypes } from "../types/toolTypes";
 import { Shapes } from "../types/shapes/shapeProps";
 import { UserDataType } from "../types/user";
 import { GetGuestName } from "../../utils/guest";
-import { CanvasData } from "../types/canvas";
+import { CanvasData, CanvasExportData } from "../types/canvas";
 
 export const toolAtom = atom<toolTypes>("none");
 export const lockAtom = atom<true | false>(false);
@@ -30,6 +30,8 @@ const sampleCanvasData: CanvasData = {
 };
 
 export const canvasDataAtom = atom<CanvasData>(sampleCanvasData);
+
+export const canvasExportAtom = atom<CanvasExportData>();
 
 export const yourCanvasesAtom = atom<true | false>(false);
 export const canvasSettingsAtom = atom<true | false>(false);

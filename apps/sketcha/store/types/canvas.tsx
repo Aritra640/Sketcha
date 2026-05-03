@@ -7,3 +7,11 @@ export type CanvasUserCombinedData = {
   canvasid?: string;
   userdata?: UserDataType;
 }
+
+export type CanvasExportData =  {
+  id?: string;
+  title?: string;
+  userid?: string;
+  createdAt?: any;
+  exportURL?: string;
+}

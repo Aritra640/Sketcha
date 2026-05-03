@@ -1,7 +1,6 @@
-
 "use client";
 
-import { useAtom } from "jotai";
+// import { useAtom } from "jotai";
 import {
     AtSign,
     Brain,
@@ -15,7 +14,7 @@ import {
   Workflow,
 } from "lucide-react";
 
-import { utilsModalAtom } from "../../store/state/state";
+// import { utilsModalAtom } from "../../store/state/state";
 
 const specialShapes = [
   User,
@@ -29,10 +28,10 @@ const specialShapes = [
   AtSign
 ];
 
-export function UtilsModal() {
-  const [modal, setModal] = useAtom(utilsModalAtom);
+export function DemoUtilsModal() {
+  // const [modal, setModal] = useAtom(utilsModalAtom);
 
-  if (!modal) return null;
+  // if (!modal) return null;
 
   return (
     <div

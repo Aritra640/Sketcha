@@ -1,19 +1,27 @@
 "use client";
 
 import { atom, useAtom } from "jotai";
-import { canvasDataAtom } from "../../../store/state/state";
+import { canvasDataAtom, userDataAtom } from "../../../store/state/state";
 import { useRef } from "react";
 import { CanvasData } from "../../../store/types/canvas";
 
 const canvasNameAtom = atom<boolean>(false);
 
 function CanvasNameModal() {
+  const [userData] = useAtom(userDataAtom);
   const [canvas, setCanvas] = useAtom(canvasDataAtom);
   const [modal, setModal] = useAtom(canvasNameAtom);
   const canvasNameRef = useRef<HTMLInputElement>(null);
 
+  const isGuest = userData.isGuest === true ? true : false;
+
   function UpdateCanvasName() {
     if (!canvasNameRef.current) return;
+
+    if (isGuest) {
+      alert("please signin to avail this feature!")
+      return;
+    }
 
     const newCanvasName = canvasNameRef.current.value.trim();
     const newCanvas: CanvasData = {
