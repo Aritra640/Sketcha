@@ -9,9 +9,7 @@ export type CanvasUserCombinedData = {
 }
 
 export type CanvasExportData =  {
-  id?: string;
-  title?: string;
-  userid?: string;
-  createdAt?: any;
-  exportURL?: string;
+  canvasId: string;
+  URL: string;
 }
+

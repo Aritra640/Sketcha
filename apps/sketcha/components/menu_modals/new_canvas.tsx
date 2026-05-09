@@ -1,12 +1,57 @@
 "use client";
 
 import { useAtom } from "jotai";
-import { addNewCanvasAtom } from "../../store/state/state";
+import { addNewCanvasAtom, userDataAtom } from "../../store/state/state";
+import { useRef } from "react";
+import { CanvasData } from "../../store/types/canvas";
+import { useRouter } from "next/navigation";
 
 export function AddCanvasModal() {
   const [modal, setModal] = useAtom(addNewCanvasAtom);
+  const canvasNameRef = useRef<HTMLInputElement>(null);
+  const [user] = useAtom(userDataAtom);
+  const router = useRouter();
 
   if (!modal) return null;
+
+  async function onCreate() {
+    try {
+      if (canvasNameRef.current === null) {
+        throw new Error("Canvas ref invalid!");
+      }
+      if (canvasNameRef.current.value === "") {
+        throw new Error("Canvas name cannot be empty!");
+      }
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/canvas`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: canvasNameRef.current.value,
+            userId: user.id,
+          }),
+          cache: "no-store",
+        },
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to update canvas title");
+      }
+
+      const newCanvas: CanvasData = await res.json();
+      const newURL = `/canvas/user/${user.id}/${newCanvas.id}`;
+
+      setModal(false);
+      router.push(newURL);
+    } catch (err) {
+      console.error("Error creating canvas title:", err);
+      alert("Something went wrong while creating new canvas");
+    }
+  }
 
   return (
     <div
@@ -26,11 +71,10 @@ export function AddCanvasModal() {
           <input
             type="text"
             placeholder="canvas title"
+            ref={canvasNameRef}
             className="input input-neutral text-center cursor-pointer bg-background"
           />
-          <button
-            className="btn btn-soft bg-selectedtool hover:bg-collab rounded-sm"
-          >
+          <button onClick={onCreate} className="btn btn-soft bg-selectedtool hover:bg-collab rounded-sm">
             Create
           </button>
         </div>

@@ -1,9 +1,9 @@
 "use client";
 
-// import { useAtom } from "jotai";
+import { useAtom } from "jotai";
 import {
-    AtSign,
-    Brain,
+  AtSign,
+  Brain,
   Database,
   Globe,
   Network,
@@ -12,9 +12,10 @@ import {
   Shield,
   User,
   Workflow,
+  Download,
 } from "lucide-react";
 
-// import { utilsModalAtom } from "../../store/state/state";
+import { canvasDataAtom, utilsModalAtom } from "../../store/state/state";
 
 const specialShapes = [
   User,
@@ -25,11 +26,12 @@ const specialShapes = [
   Workflow,
   Network,
   Brain,
-  AtSign
+  AtSign,
 ];
 
 export function DemoUtilsModal() {
   // const [modal, setModal] = useAtom(utilsModalAtom);
+  const [canvas] = useAtom(canvasDataAtom);
 
   // if (!modal) return null;
 
@@ -43,6 +45,25 @@ export function DemoUtilsModal() {
         className="relative w-full max-w-md mx-4 rounded-2xl bg-menu shadow-2xl border border-white/10 p-6 animate-in zoom-in-95 duration-200"
       >
         <div className="space-y-6">
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <div className="flex items-center justify-between gap-4">
+              <div className="min-w-0">
+                <div className="font-mono text-sm font-bold">
+                  Export Current Canvas
+                </div>
+
+                <div className="text-sm opacity-60 mt-1 truncate">
+                  {canvas.title}
+                </div>
+              </div>
+
+              <button className="btn rounded-xl px-4 border-white/10 bg-white/[0.06] hover:bg-white/[0.12]">
+                <Download size={16} />
+                Export
+              </button>
+            </div>
+          </div>
+
           <div>
             <div className="font-mono text-sm font-bold mb-3">
               Get Shared Canvas

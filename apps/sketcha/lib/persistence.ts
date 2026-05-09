@@ -34,7 +34,7 @@ export async function clearCanvas(canvasId: string) {
   });
 }
 
-export async function deleteCanvas(canvasId: string) {
+export async function deleteCanvasFromLocalDB(canvasId: string) {
   const db = await getDB();
 
   await db.delete("canvases", canvasId);

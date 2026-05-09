@@ -21,6 +21,7 @@ export function CanvasPageComponent({
 }: CanvasPageComponentProp) {
   const [user, setUser] = useAtom(userDataAtom);
   const [canvas, setCanvas] = useAtom(canvasDataAtom);
+
   useEffect(() => {
     setUser(userData);
 
@@ -29,7 +30,7 @@ export function CanvasPageComponent({
       console.log(canvas);
       setCanvas(canvasData);
     }
-  });
+  }, [userData, canvasData, setUser, setCanvas]);
 
   return (
     <div className="bg-background h-screen w-screen">

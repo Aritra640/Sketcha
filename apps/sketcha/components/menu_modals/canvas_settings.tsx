@@ -2,16 +2,19 @@
 
 import { useState } from "react";
 import { useAtom } from "jotai";
-import { canvasSettingsAtom } from "../../store/state/state";
+import { canvasDataAtom, canvasSettingsAtom } from "../../store/state/state";
+import { deleteCanvasFromLocalDB } from "../../lib/persistence";
 
 const backgroundColors = [
-  { name: "Red", value: "#ef4444" },
+  { name: "White", value: "#F2F2F0" },
+  { name: "Yellow", value: "#FAFA05" },
+  { name: "Sky", value: "#56DFF0" },
   { name: "Blue", value: "#3b82f6" },
   { name: "Dark Blue", value: "#1e3a8a" },
-  { name: "Grey", value: "#6b7280" },
-  { name: "Brown", value: "#92400e" },
+  { name: "Red", value: "#ef4444" },
   { name: "Dark Brown", value: "#663300" },
-  { name: "Zinc", value: "#18181B" },
+  { name: "Grey", value: "#6b7280" },
+  { name: "Dark", value: "#1C1C1A" },
 ];
 
 export function CanvasSettingsModal() {
@@ -20,6 +23,21 @@ export function CanvasSettingsModal() {
   const [selectedBg, setSelectedBg] = useState("#3b82f6");
 
   if (!modal) return null;
+
+  const [canvasData] = useAtom(canvasDataAtom);
+
+
+  async function DeleteCurrentSketch() {
+    //erase sketch from indexeddb
+    deleteCanvasFromLocalDB(canvasData.id);
+    //erase canvas from db
+  }
+  
+  async function ResetCurrentCanvas() {
+    //erase all shapes from local state
+    //erase all shapes from db
+    //refresh
+  }
 
   return (
     <div
@@ -109,9 +127,9 @@ export function CanvasSettingsModal() {
         </div>
 
         <div className="px-6 py-5 border-t border-base-300 space-y-3">
-          <Button name="Reset Canvas" variant="primary" />
+          <Button name="Reset Current Sketch" variant="primary" />
 
-          <Button name="Delete Canvas" variant="primary" />
+          <Button name="Delete Current Sketch" variant="primary" />
         </div>
 
         <div className="pb-2" />

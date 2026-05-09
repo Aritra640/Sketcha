@@ -23,9 +23,12 @@ export async function GET(request: Request) {
 
     const { searchParams } = new URL(request.url);
     const canvasId = searchParams.get("canvasId");
-    
-    if(canvasId === null) {
-      return NextResponse.json({msg: "canvas id not found!"}, {status: 404});
+
+    if (canvasId === null) {
+      return NextResponse.json(
+        { msg: "canvas id not found!" },
+        { status: 404 },
+      );
     }
 
     const canvas = await prisma.canvas.findUnique({
@@ -99,23 +102,35 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   //Update canvas title
   try {
-    const data = await request.json();
-    if (!data) {
-      return NextResponse.json(
-        {
-          error: "body may be empty or missing",
-        },
-        { status: 404 },
-      );
+    // const data = await request.json();
+    // if (!data) {
+    //   return NextResponse.json(
+    //     {
+    //       error: "body may be empty or missing",
+    //     },
+    //     { status: 404 },
+    //   );
+    // }
+    // const req = ConvertPutJSON(data);
+
+    const { searchParams } = new URL(request.url);
+    const canvasId = searchParams.get("canvasId");
+    const canvasTitle = searchParams.get("canvasTitle");
+
+    if (canvasId === null) {
+      return NextResponse.json({ msg: "Canvasid not found!" }, { status: 404 });
     }
-    const req = ConvertPutJSON(data);
+
+    if (canvasTitle === null) {
+      return NextResponse.json({ msg: "Canvasid not found!" }, { status: 404 });
+    }
 
     const canvas = await prisma.canvas.update({
       where: {
-        id: req.id,
+        id: canvasId,
       },
       data: {
-        title: req.new_title,
+        title: canvasTitle,
       },
     });
 

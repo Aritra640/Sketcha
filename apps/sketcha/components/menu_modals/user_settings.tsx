@@ -1,7 +1,15 @@
 "use client";
 
 import { useAtom } from "jotai";
-import { userDataAtom, userSettingsAtom } from "../../store/state/state";
+import {
+  canvasDataAtom,
+  userDataAtom,
+  userSettingsAtom,
+} from "../../store/state/state";
+import { CanvasData } from "../../store/types/canvas";
+import { useRouter } from "next/navigation";
+import { authClient } from "@repo/db_auth_service/client";
+import { deleteUser } from "better-auth/api";
 
 function Avatar({ letter }: { letter: string }) {
   return (
@@ -35,6 +43,8 @@ function ImageAvatar({ url, alt }: { url: string; alt: string }) {
 export function UserSettingsModal() {
   const [modal, setModal] = useAtom(userSettingsAtom);
   const [userData] = useAtom(userDataAtom);
+  const [canvas] = useAtom(canvasDataAtom);
+  const router = useRouter();
 
   if (!userData) return null;
   if (!modal) return null;
@@ -56,6 +66,17 @@ export function UserSettingsModal() {
   const useremail =
     userData.email === undefined ? "AvatarEmail" : userData.email;
 
+  async function DeleteOnClick() {
+    try {
+      await authClient.deleteUser({
+        callbackURL: "/",
+      });
+    } catch (error) {
+      console.error("Error deleting canvas", error);
+      alert("Something went wrong while deleting canvas");
+    }
+  }
+
   return (
     <div
       className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm animate-in fade-in duration-200"
@@ -69,7 +90,9 @@ export function UserSettingsModal() {
           <AvatarComponent />
         </div>
 
-        <div className="pt-3 font-mono text-sm flex justify-center">{username}</div>
+        <div className="pt-3 font-mono text-sm flex justify-center">
+          {username}
+        </div>
         <div className="font-mono text-sm flex justify-center">{useremail}</div>
         <div className="font-mono text-sm flex justify-center">
           Joined at{" "}
@@ -79,7 +102,7 @@ export function UserSettingsModal() {
         </div>
 
         <div className="pt-5 flex justify-center">
-          <button className="btn btn-soft bg-selectedtool hover:bg-collab rounded-sm">
+          <button onClick={DeleteOnClick} className="btn btn-soft bg-selectedtool hover:bg-collab rounded-sm">
             Delete account
           </button>
         </div>

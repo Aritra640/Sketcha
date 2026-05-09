@@ -2,7 +2,7 @@
 
 import { atom, useAtom } from "jotai";
 import { canvasDataAtom, userDataAtom } from "../../../store/state/state";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { CanvasData } from "../../../store/types/canvas";
 
 const canvasNameAtom = atom<boolean>(false);
@@ -15,24 +15,45 @@ function CanvasNameModal() {
 
   const isGuest = userData.isGuest === true ? true : false;
 
-  function UpdateCanvasName() {
+  async function UpdateCanvasName() {
     if (!canvasNameRef.current) return;
 
     if (isGuest) {
-      alert("please signin to avail this feature!")
+      alert("please signin to avail this feature!");
       return;
     }
 
     const newCanvasName = canvasNameRef.current.value.trim();
-    const newCanvas: CanvasData = {
-      id: canvas.id,
-      title: newCanvasName,
-      userId: canvas.userId,
-      createdAt: canvas.createdAt,
-    };
-    setCanvas(newCanvas);
 
-    setModal(false);
+    if (!newCanvasName) {
+      alert("Canvas name cannot be empty");
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `/api/canvas?canvasId=${encodeURIComponent(canvas.id)}&canvasTitle=${encodeURIComponent(newCanvasName)}`,
+        {
+          method: "PUT",
+        },
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to update canvas title");
+      }
+
+      const updatedCanvas: CanvasData = await res.json();
+
+      setCanvas((prev) => ({
+        ...prev,
+        title: updatedCanvas.title,
+      }));
+
+      setModal(false);
+    } catch (err) {
+      console.error("Error updating canvas title:", err);
+      alert("Something went wrong while updating the canvas");
+    }
   }
 
   if (!modal) return null;
@@ -59,6 +80,7 @@ function CanvasNameModal() {
           <input
             ref={canvasNameRef}
             type="text"
+            defaultValue={canvas.title}
             placeholder="Type here"
             className="input text-center"
           />

@@ -28,3 +28,31 @@ export async function GetCanvasData(
     return null;
   }
 }
+
+export async function ChangeCanvasTitle(
+  canvasId: string,
+  newCanvasTitle: string,
+): Promise<CanvasData | null> {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/canvas?canvasId=${canvasId}&canvasTitle=${newCanvasTitle}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
+      },
+    );
+    if (!res.ok) {
+      throw new Error("Error: canvas_id may be invalid!");
+    }
+    const data = await res.json();
+    const canvas_data = ConvertCanvasResponseJSON(data);
+
+    return canvas_data;
+  } catch (err) {
+    console.error("Error in ChangeCanvasTitle api call: ", err);
+    return null;
+  }
+}
