@@ -31,3 +31,15 @@ export async function GET(request: Request) {
     return NextResponse.json({ msg: "internal server error" }, { status: 500 });
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+
+
+
+  } catch(error) {
+    
+    console.error("Error in deleting canvas state: ", error);
+    return NextResponse.json({ msg: "Canvas state deletion failed!"}, {status: 404})
+  }
+}

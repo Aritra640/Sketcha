@@ -24,7 +24,7 @@ export async function loadCanvas(
   return data?.shapes || [];
 }
 
-export async function clearCanvas(canvasId: string) {
+export async function clearCanvasFromLocalDB(canvasId: string) {
   const db = await getDB();
 
   await db.put("canvases", {

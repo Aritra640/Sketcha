@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useAtom } from "jotai";
 import { canvasDataAtom, canvasSettingsAtom } from "../../store/state/state";
-import { deleteCanvasFromLocalDB } from "../../lib/persistence";
+import { clearCanvasFromLocalDB, deleteCanvasFromLocalDB } from "../../lib/persistence";
+import { useRouter } from "next/navigation";
 
 const backgroundColors = [
   { name: "White", value: "#F2F2F0" },
@@ -21,22 +22,61 @@ export function CanvasSettingsModal() {
   const [modal, setModal] = useAtom(canvasSettingsAtom);
 
   const [selectedBg, setSelectedBg] = useState("#3b82f6");
-
+  const router = useRouter();
+  const [canvasData] = useAtom(canvasDataAtom);
   if (!modal) return null;
 
-  const [canvasData] = useAtom(canvasDataAtom);
-
-
   async function DeleteCurrentSketch() {
-    //erase sketch from indexeddb
-    deleteCanvasFromLocalDB(canvasData.id);
-    //erase canvas from db
-  }
+    try {
+      //erase sketch from indexeddb
+      deleteCanvasFromLocalDB(canvasData.id);
+      //erase canvas from db
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/canvas`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: canvasData.id,
+          }),
+          cache: "no-store",
+        },
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to delete current canvas!");
+      }
+
+      router.push("/canvas/user");
+
   
+    } catch (error) {
+      alert(
+        "Error has occured! trying to delete current sketch may have failed!",
+      );
+      console.log(
+        "Error: error in DeleteCurrentSketch (canvas_settings): ",
+        error,
+      );
+    }
+  }
+
   async function ResetCurrentCanvas() {
     //erase all shapes from local state
     //erase all shapes from db
     //refresh
+    //
+    try {
+      clearCanvasFromLocalDB(canvasData.id);
+      
+
+    } catch(error) {
+      alert("Error has occured! trying to reset current sketch(canvas) might have failed!");
+      console.log("Error: error in ResetCurrentCanvas (canvas_settings): " , error);
+    }
   }
 
   return (
