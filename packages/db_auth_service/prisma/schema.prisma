@@ -78,6 +78,7 @@ model Canvas {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   shapes    Shape[]
   CanvasExport CanvasExport[]
+  ShareCanvas  ShareCanvas[]
   lastOpenedAt DateTime   @default(now())
 
   @@unique([userId, title])
@@ -123,4 +124,11 @@ model CanvasExport {
   canvasId  String @id
   url   String
   canvas   Canvas @relation(fields: [canvasId], references: [id], onDelete: Cascade)
+}
+
+
+model ShareCanvas {
+  slug     String   @id 
+  canvasId String 
+  canvas   Canvas   @relation(fields: [canvasId], references: [id], onDelete: Cascade)
 }

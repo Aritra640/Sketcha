@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
-import { ConvertGetStateJSON } from "../../../utils/canvasAPI_utils";
+import {
+  ConvertGetStateJSON,
+  DeleteCanvasStateJSON,
+} from "../../../utils/canvasAPI_utils";
 import { prisma } from "@repo/db_auth_service";
 
 export async function GET(request: Request) {
@@ -34,12 +37,30 @@ export async function GET(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
+    const data = await request.json();
+    if (!data) {
+      return NextResponse.json(
+        {
+          error: "body may be empty or missing",
+        },
+        { status: 404 },
+      );
+    }
+
+    const req = DeleteCanvasStateJSON(data);
 
 
-
-  } catch(error) {
-    
+    const state = await prisma.shape.deleteMany({
+      where: {
+        canvasId: req.id,
+      },
+    });
+    return NextResponse.json(state, { status: 200 });
+  } catch (error) {
     console.error("Error in deleting canvas state: ", error);
-    return NextResponse.json({ msg: "Canvas state deletion failed!"}, {status: 404})
+    return NextResponse.json(
+      { msg: "Canvas state deletion failed!" },
+      { status: 404 },
+    );
   }
 }

@@ -3,9 +3,7 @@ import { NextResponse } from "next/server";
 import {
   CanvasResponse,
   ConvertDeleteJSON,
-  ConvertGetJSON,
   ConvertPostJSON,
-  ConvertPutJSON,
 } from "../../../utils/canvasAPI_utils";
 
 export async function GET(request: Request) {
@@ -156,7 +154,7 @@ export async function PUT(request: Request) {
 export async function DELETE(request: Request) {
   //Delete canvas
   try {
-    const data = request.json();
+    const data = await request.json();
     if (!data) {
       return NextResponse.json(
         {

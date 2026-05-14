@@ -19,8 +19,20 @@ export default function ImageShape({ shape }: { shape: Shapes }) {
   const [, setDrawnShapes] = useAtom(drawnAtom);
   const [curTool] = useAtom(toolAtom);
 
-  if (shape.type !== "Image") return null;
-  const [image] = useImage(shape.src);
+  const isImageShape = shape.type === "Image";
+  const [image, status] = useImage(isImageShape ? shape.src : "");
+
+  if (!isImageShape) return null;
+
+  if (
+    status !== "loaded" ||
+    !image ||
+    !image.complete ||
+    image.naturalWidth === 0 ||
+    image.naturalHeight === 0
+  ) {
+    return null;
+  }
 
   return (
     <KonvaImage

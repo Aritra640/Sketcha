@@ -1,7 +1,7 @@
 "use client";
 
 import { useAtom } from "jotai";
-import { addNewCanvasAtom, userDataAtom } from "../../store/state/state";
+import { addNewCanvasAtom, drawnAtom, hydrateState, userDataAtom } from "../../store/state/state";
 import { useRef } from "react";
 import { CanvasData } from "../../store/types/canvas";
 import { useRouter } from "next/navigation";

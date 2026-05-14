@@ -2,8 +2,15 @@
 
 import { useState } from "react";
 import { useAtom } from "jotai";
-import { canvasDataAtom, canvasSettingsAtom } from "../../store/state/state";
-import { clearCanvasFromLocalDB, deleteCanvasFromLocalDB } from "../../lib/persistence";
+import {
+  canvasDataAtom,
+  canvasSettingsAtom,
+  drawnAtom,
+} from "../../store/state/state";
+import {
+  clearCanvasFromLocalDB,
+  deleteCanvasFromLocalDB,
+} from "../../lib/persistence";
 import { useRouter } from "next/navigation";
 
 const backgroundColors = [
@@ -24,12 +31,13 @@ export function CanvasSettingsModal() {
   const [selectedBg, setSelectedBg] = useState("#3b82f6");
   const router = useRouter();
   const [canvasData] = useAtom(canvasDataAtom);
+  const [, setDrawnShapes] = useAtom(drawnAtom);
   if (!modal) return null;
 
   async function DeleteCurrentSketch() {
     try {
       //erase sketch from indexeddb
-      deleteCanvasFromLocalDB(canvasData.id);
+      await deleteCanvasFromLocalDB(canvasData.id);
       //erase canvas from db
 
       const res = await fetch(
@@ -50,9 +58,9 @@ export function CanvasSettingsModal() {
         throw new Error("Failed to delete current canvas!");
       }
 
+      setDrawnShapes([]);
+      setModal(false);
       router.push("/canvas/user");
-
-  
     } catch (error) {
       alert(
         "Error has occured! trying to delete current sketch may have failed!",
@@ -67,15 +75,39 @@ export function CanvasSettingsModal() {
   async function ResetCurrentCanvas() {
     //erase all shapes from local state
     //erase all shapes from db
-    //refresh
+    //clean the canvas shape atom
     //
     try {
-      clearCanvasFromLocalDB(canvasData.id);
-      
+      await clearCanvasFromLocalDB(canvasData.id);
 
-    } catch(error) {
-      alert("Error has occured! trying to reset current sketch(canvas) might have failed!");
-      console.log("Error: error in ResetCurrentCanvas (canvas_settings): " , error);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/canvas_state`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: canvasData.id,
+          }),
+          cache: "no-store",
+        },
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to delete current canvas state!");
+      }
+
+      setDrawnShapes([]);
+      setModal(false);
+    } catch (error) {
+      alert(
+        "Error has occured! trying to reset current sketch(canvas) might have failed!",
+      );
+      console.log(
+        "Error: error in ResetCurrentCanvas (canvas_settings): ",
+        error,
+      );
     }
   }
 
@@ -88,7 +120,6 @@ export function CanvasSettingsModal() {
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-md rounded-2xl bg-base-100 border border-base-300 shadow-2xl"
       >
-        {/* Header */}
         <div className="px-6 py-5 border-b border-base-300 flex justify-center items-center">
           <div>
             <h1 className="text-xl text-center font-bold tracking-tight">
@@ -101,7 +132,6 @@ export function CanvasSettingsModal() {
           </div>
         </div>
 
-        {/* Theme */}
         <div className="px-6 py-5">
           <div className="flex items-center justify-between rounded-xl border border-base-300 px-4 py-3 hover:bg-base-200/50 transition">
             <div>
@@ -167,9 +197,17 @@ export function CanvasSettingsModal() {
         </div>
 
         <div className="px-6 py-5 border-t border-base-300 space-y-3">
-          <Button name="Reset Current Sketch" variant="primary" />
+          <Button
+            onClick={ResetCurrentCanvas}
+            name="Reset Current Sketch"
+            variant="primary"
+          />
 
-          <Button name="Delete Current Sketch" variant="primary" />
+          <Button
+            onClick={DeleteCurrentSketch}
+            name="Delete Current Sketch"
+            variant="primary"
+          />
         </div>
 
         <div className="pb-2" />

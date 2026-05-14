@@ -6,7 +6,9 @@ import { Stage, Layer, Transformer } from "react-konva";
 import Konva from "konva";
 
 import {
+  canvasDataAtom,
   drawnAtom,
+  hydrateState,
   lockAtom,
   selectedIdAtom,
   toolAtom,
@@ -31,9 +33,9 @@ import PencilShape from "./shapes/pencil/Pencil";
 import ImageShape from "./shapes/image/Image";
 import TextShapeComponent from "./shapes/text/Text";
 import { loadCanvas, saveCanvas } from "../../lib/persistence";
+import { useDebouncedPreviewGeneration } from "../../store/hooks/useDebouncedPreviewGeneration";
 
 export function Canvas() {
-
   const [dimensions, setDimensions] = useState({
     width: 0,
     height: 0,
@@ -44,11 +46,12 @@ export function Canvas() {
   const [drawnShapes, setDrawnShapes] = useAtom(drawnAtom);
 
   const [selectedId, setSelectedId] = useAtom(selectedIdAtom);
+  const [canvas] = useAtom(canvasDataAtom);
 
   const [curTool] = useAtom(toolAtom);
 
   const [draftShape, setDraftShape] = useState<Shapes | null>(null);
-  const canvasId = "main-canvas";
+  const canvasId = canvas.id;
 
   const [isErasing, setIsErasing] = useState(false);
 
@@ -60,6 +63,9 @@ export function Canvas() {
   const transformerRef = useRef<Konva.Transformer | null>(null);
 
   const stageRef = useRef<Konva.Stage | null>(null);
+  const [hydrated, setHydrated] = useAtom(hydrateState);
+
+  const loadedCanvasRef = useRef<string | null>(null);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -101,25 +107,40 @@ export function Canvas() {
   }, []);
 
   useEffect(() => {
+    let cancelled = false;
+
     async function hydrateCanvas() {
+      setHydrated(false);
+
       const savedShapes = await loadCanvas(canvasId);
-      if (savedShapes === null) {
-        console.log("local db shapes === null");
-      } else if (savedShapes.length > 0) {
-        setDrawnShapes(savedShapes);
-      }
+
+      if (cancelled) return;
+
+      setDrawnShapes(savedShapes || []);
+
+      loadedCanvasRef.current = canvasId;
+
+      setHydrated(true);
     }
 
     hydrateCanvas();
-  }, []);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [canvasId]);
 
   useEffect(() => {
+    if (!hydrated) return;
+
+    if (loadedCanvasRef.current !== canvasId) return;
+
     const timeout = setTimeout(() => {
       saveCanvas(canvasId, drawnShapes);
     }, 500);
 
     return () => clearTimeout(timeout);
-  }, [drawnShapes]);
+  }, [drawnShapes, hydrated, canvasId]);
 
   useEffect(() => {
     const transformer = transformerRef.current;
@@ -150,6 +171,19 @@ export function Canvas() {
   const isDrawingTool = ["rect", "line", "circle", "arrow", "pen"].includes(
     curTool,
   );
+
+  useDebouncedPreviewGeneration({
+    canvasId,
+    stageRef,
+    transformerRef,
+    shapes: drawnShapes,
+    enabled: hydrated && loadedCanvasRef.current === canvasId,
+    isInteracting: Boolean(draftShape) || isErasing,
+    stageX: stagePos.x,
+    stageY: stagePos.y,
+    stageWidth: dimensions.width,
+    stageHeight: dimensions.height,
+  });
 
   return (
     <Stage

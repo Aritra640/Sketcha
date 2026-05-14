@@ -42,3 +42,5 @@ export const utilsModalAtom = atom<true|false>(false);
 
 
 export const googleSigninAtom = atom<true|false>(true);
+
+export const hydrateState = atom<boolean>(false);

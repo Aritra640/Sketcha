@@ -51,6 +51,16 @@ export function ConvertGetStateJSON(data: unknown): GetCanvasState {
   return GetCanvasStateSchema.parse(data);
 }
 
+const DeleteCanvasStateSchema = z.object({
+  id: z.coerce.string(),
+})
+
+export type DeleteCanvasState = z.infer<typeof DeleteCanvasStateSchema>;
+
+export function DeleteCanvasStateJSON(data: unknown): DeleteCanvasState {
+  return DeleteCanvasStateSchema.parse(data);
+}
+
 const CanvasResponseSchema = z.object({
   id: z.coerce.string(),
   title: z.coerce.string(),
