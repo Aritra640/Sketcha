@@ -20,10 +20,7 @@ export function startPencil(pointer: Vector2d): PencilProp {
   };
 }
 
-export function updatePencil(
-  shape: Shapes,
-  pointer: Vector2d
-): Shapes {
+export function updatePencil(shape: Shapes, pointer: Vector2d): Shapes {
   if (shape.type !== "Pencil") return shape;
 
   const points = shape.points;
@@ -31,6 +28,8 @@ export function updatePencil(
 
   const lastX = points[points.length - 2];
   const lastY = points[points.length - 1];
+
+  if (lastX === undefined || lastY === undefined) return shape;
 
   const newX = pointer.x - shape.x;
   const newY = pointer.y - shape.y;

@@ -11,9 +11,9 @@ import {
   toolAtom,
 } from "../../../../store/state/state";
 
-import { Shapes } from "../../../../store/types/shapes/shapeProps";
+import { TextProp } from "../../../../store/types/shapes/shapeProps";
 
-export default function TextShapeComponent({ shape }: { shape: Shapes }) {
+export default function TextShapeComponent({ shape }: { shape: TextProp }) {
   const [, setSelectedId] = useAtom(selectedIdAtom);
   const [, setDrawnShapes] = useAtom(drawnAtom);
   const [curTool] = useAtom(toolAtom);
@@ -21,8 +21,6 @@ export default function TextShapeComponent({ shape }: { shape: Shapes }) {
   const [isEditing, setIsEditing] = useState(false);
 
   const textRef = useRef<Konva.Text>(null);
-
-  if (shape.type !== "Text") return null;
 
   function handleDblClick() {
     const node = textRef.current;
@@ -67,8 +65,7 @@ export default function TextShapeComponent({ shape }: { shape: Shapes }) {
 
     textarea.style.fontSize = `${shape.fontSize}px`;
 
-    textarea.style.fontFamily =
-      `"Virgil", "Comic Sans MS", "Caveat", cursive`;
+    textarea.style.fontFamily = `"Virgil", "Comic Sans MS", "Caveat", cursive`;
 
     textarea.style.fontWeight = "400";
 
@@ -83,20 +80,14 @@ export default function TextShapeComponent({ shape }: { shape: Shapes }) {
 
     textarea.focus();
 
-    textarea.setSelectionRange(
-      textarea.value.length,
-      textarea.value.length
-    );
+    textarea.setSelectionRange(textarea.value.length, textarea.value.length);
 
     function removeTextarea() {
       textarea.remove();
 
       setIsEditing(false);
 
-      window.removeEventListener(
-        "mousedown",
-        handleOutsideClick
-      );
+      window.removeEventListener("mousedown", handleOutsideClick);
     }
 
     function save() {
@@ -107,8 +98,8 @@ export default function TextShapeComponent({ shape }: { shape: Shapes }) {
                 ...s,
                 text: textarea.value,
               }
-            : s
-        )
+            : s,
+        ),
       );
 
       removeTextarea();
@@ -137,10 +128,7 @@ export default function TextShapeComponent({ shape }: { shape: Shapes }) {
     });
 
     setTimeout(() => {
-      window.addEventListener(
-        "mousedown",
-        handleOutsideClick
-      );
+      window.addEventListener("mousedown", handleOutsideClick);
     }, 0);
   }
 
@@ -170,8 +158,8 @@ export default function TextShapeComponent({ shape }: { shape: Shapes }) {
                   x: node.x(),
                   y: node.y(),
                 }
-              : s
-          )
+              : s,
+          ),
         );
       }}
       onTransformEnd={(e) => {
@@ -188,13 +176,10 @@ export default function TextShapeComponent({ shape }: { shape: Shapes }) {
                   ...s,
                   x: node.x(),
                   y: node.y(),
-                  fontSize: Math.max(
-                    10,
-                    shape.fontSize * scaleX
-                  ),
+                  fontSize: Math.max(10, shape.fontSize * scaleX),
                 }
-              : s
-          )
+              : s,
+          ),
         );
       }}
     />

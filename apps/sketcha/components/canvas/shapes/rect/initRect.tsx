@@ -9,6 +9,8 @@ export function DrawRect(pointer: Vector2d): Shapes {
     y: pointer.y,
     width: 100,
     height: 100,
+    startX: pointer.x,
+    startY: pointer.y,
     stroke: "white",
     strokeWidth: 2,
     shadowBlur: 5,
@@ -17,5 +19,3 @@ export function DrawRect(pointer: Vector2d): Shapes {
 
   return newRect;
 }
-
-

@@ -30,10 +30,10 @@ const specialShapes = [
 ];
 
 export function DemoUtilsModal() {
-  // const [modal, setModal] = useAtom(utilsModalAtom);
+  const [modal, setModal] = useAtom(utilsModalAtom);
   const [canvas] = useAtom(canvasDataAtom);
 
-  // if (!modal) return null;
+  if (!modal) return null;
 
   return (
     <div
