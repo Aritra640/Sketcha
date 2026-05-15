@@ -8,20 +8,19 @@ import { prisma } from "@repo/db_auth_service";
 export async function GET(request: Request) {
   //get all shapes of the current canvas;
   try {
-    const data = await request.json();
-    if (!data) {
+    const { searchParams } = new URL(request.url);
+    const canvasId = searchParams.get("canvasId");
+
+    if (canvasId === null) {
       return NextResponse.json(
-        {
-          error: "body may be empty or missing",
-        },
+        { msg: "canvasId either invalid or null!" },
         { status: 404 },
       );
     }
 
-    const req = ConvertGetStateJSON(data);
     const state = await prisma.shape.findMany({
       where: {
-        canvasId: req.id,
+        canvasId: canvasId,
       },
       orderBy: {
         createdAt: "asc",
@@ -48,7 +47,6 @@ export async function DELETE(request: Request) {
     }
 
     const req = DeleteCanvasStateJSON(data);
-
 
     const state = await prisma.shape.deleteMany({
       where: {
