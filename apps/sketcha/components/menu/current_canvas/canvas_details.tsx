@@ -89,7 +89,7 @@ function CanvasNameModal() {
         <div className="mt-6 flex justify-center items-center">
           <button
             onClick={UpdateCanvasName}
-            className="px-4 py-2 cursor-pointer rounded-lg bg-primary text-white hover:opacity-90 transition"
+            className="px-4 py-2 cursor-pointer rounded-lg bg-selectedtool text-white hover:opacity-90 transition"
           >
             Submit
           </button>

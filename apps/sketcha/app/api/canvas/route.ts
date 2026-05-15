@@ -1,4 +1,5 @@
-import { prisma } from "@repo/db_auth_service";
+import { auth, prisma } from "@repo/db_auth_service";
+import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import {
   CanvasResponse,
@@ -21,6 +22,38 @@ export async function GET(request: Request) {
 
     const { searchParams } = new URL(request.url);
     const canvasId = searchParams.get("canvasId");
+    const userId = searchParams.get("userId");
+
+    if (userId !== null) {
+      const session = await auth.api.getSession({
+        headers: await headers(),
+      });
+
+      if (!session || session.user.id !== userId) {
+        return NextResponse.json(
+          { msg: "authentication failed!" },
+          { status: 401 },
+        );
+      }
+
+      const canvases = await prisma.canvas.findMany({
+        where: {
+          userId,
+        },
+        orderBy: {
+          lastOpenedAt: "desc",
+        },
+      });
+
+      const retObj: CanvasResponse[] = canvases.map((canvas) => ({
+        id: canvas.id,
+        title: canvas.title,
+        userId: canvas.userId,
+        createdAt: canvas.createdAt,
+      }));
+
+      return NextResponse.json(retObj, { status: 200 });
+    }
 
     if (canvasId === null) {
       return NextResponse.json(
