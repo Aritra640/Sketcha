@@ -11,6 +11,7 @@ import {
   hydrateState,
   lockAtom,
   selectedIdAtom,
+  stageRefAtom,
   toolAtom,
 } from "../../store/state/state";
 
@@ -66,6 +67,8 @@ export function Canvas() {
   const [hydrated, setHydrated] = useAtom(hydrateState);
 
   const loadedCanvasRef = useRef<string | null>(null);
+
+  const [, setStageRef] = useAtom(stageRefAtom);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -171,6 +174,10 @@ export function Canvas() {
   const isDrawingTool = ["rect", "line", "circle", "arrow", "pen"].includes(
     curTool,
   );
+
+  useEffect(() => {
+    setStageRef(stageRef);
+  }, []);
 
   useDebouncedPreviewGeneration({
     canvasId,

@@ -15,7 +15,7 @@ import {
   Download,
 } from "lucide-react";
 
-import { canvasDataAtom, utilsModalAtom } from "../../store/state/state";
+import { canvasDataAtom, stageRefAtom, utilsModalAtom } from "../../store/state/state";
 
 const specialShapes = [
   User,
@@ -32,8 +32,23 @@ const specialShapes = [
 export function UtilsModal() {
   const [modal, setModal] = useAtom(utilsModalAtom);
   const [canvas] = useAtom(canvasDataAtom);
+  const [stageRef, setStageRef] =  useAtom(stageRefAtom);
 
   if (!modal) return null;
+
+  const exportCanvas = () => {
+    if(!stageRef?.current) return;
+
+    const url = stageRef.current.toDataURL({
+      pixelRatio: 2,
+    });
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = `${canvas.title}.png`;
+    link.click();
+  }
 
   return (
     <div
@@ -57,7 +72,7 @@ export function UtilsModal() {
                 </div>
               </div>
 
-              <button className="btn rounded-xl px-4 border-white/10 bg-white/[0.06] hover:bg-white/[0.12]">
+              <button onClick={exportCanvas} className="btn rounded-xl px-4 border-white/10 bg-white/[0.06] hover:bg-white/[0.12]">
                 <Download size={16} />
                 Export
               </button>
